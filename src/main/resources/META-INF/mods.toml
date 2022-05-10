@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="[39,)"
+license="All rights reserved"
+issueTrackerURL="https://www.curseforge.com/minecraft/mc-mods/particle-spawner/issues"
+
+[[mods]]
+modId="particle_spawner"
+version="1.0.0"
+displayName="Particle Spawner"
+itemIcon="minecraft:spawner"
+updateJSONURL="https://raw.githubusercontent.com/XxRexRaptorxX/Update-Checker/main/ParticleSpawner"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/particle-spawner"
+logoFile="logo.png"
+#credits=""
+authors="XxRexRaptorxX (RexRaptor)"
+description='''
+Adds new particle blocks that beautify your world!
+'''
+
+[[dependencies.particle_spawner]]
+    modId="forge"
+    mandatory=true
+    versionRange="[39,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.particle_spawner]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18,1.19)"
+    ordering="NONE"
+    side="BOTH"
