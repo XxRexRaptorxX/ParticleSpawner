@@ -1,5 +1,6 @@
 {
   "itemGroup.particle_spawner_tab": "Particle Spawner",
 
-  "block.particle_spawner.particle_spawner": "Partikel Spawner"
+  "block.particle_spawner.particle_spawner": "Partikel Spawner",
+  "item.particle_spawner.adjustment_tool": "Justierungs Werkzeug"
 }

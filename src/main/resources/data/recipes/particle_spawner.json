@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+  
+    "XOX",
+    "O#O",
+    "XOX"
+  ],
+    
+  "key": {
+    "#": {
+      "item": "minecraft:redstone_block"
+    },
+    "X": {
+      "item": "minecraft:iron_ingot"
+    },
+    "O": {
+      "item": "minecraft:redstone"
+    }
+  },
+  
+  "result": {
+    "item": "particle_spawner:particle_spawner"
+  }
+}

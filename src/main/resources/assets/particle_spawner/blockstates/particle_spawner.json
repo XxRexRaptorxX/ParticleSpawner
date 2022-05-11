@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "particle_spawner:block/particle_spawner"
+    }
+  }
+}
