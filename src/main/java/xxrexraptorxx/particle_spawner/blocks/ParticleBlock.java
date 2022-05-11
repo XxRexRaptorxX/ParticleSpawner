@@ -43,8 +43,6 @@ public class ParticleBlock extends Block {
 	public static final IntegerProperty PARTICLE_RANGE = IntegerProperty.create("range", 0, 10);
 
 
-
-
 	public ParticleBlock() {
 		super(Properties.of(Material.AIR)
 				.noCollission()
@@ -77,9 +75,8 @@ public class ParticleBlock extends Block {
 
 	@Override
 	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!world.isClientSide) {
-			if(player.getUseItem().getItem().getRegistryName().toString() == ModItems.TOOL.get().getRegistryName().toString()) {
-
+		if (!world.isClientSide) { {
+				System.err.println("!!");
 				world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
 				world.setBlock(pos, this.defaultBlockState().setValue(PARTICLE_STRENGTH, state.getValue(PARTICLE_STRENGTH) + 1), 11);
 			}
