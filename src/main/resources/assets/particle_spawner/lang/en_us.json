@@ -1,6 +1,8 @@
 {
   "itemGroup.particle_spawner_tab": "Particle Spawner",
 
+  "message.particle_spawner.tool.desc": "Shift + Right-click to change the mode",
+
   "block.particle_spawner.particle_spawner": "Particle Spawner",
   "item.particle_spawner.adjustment_tool": "Adjustment Tool"
 }

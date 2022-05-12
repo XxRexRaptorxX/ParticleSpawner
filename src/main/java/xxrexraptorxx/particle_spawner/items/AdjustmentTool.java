@@ -1,24 +1,17 @@
 package xxrexraptorxx.particle_spawner.items;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.lwjgl.system.CallbackI;
-import xxrexraptorxx.particle_spawner.main.References;
 import xxrexraptorxx.particle_spawner.utils.CreativeTab;
 
-import java.util.UUID;
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class AdjustmentTool extends Item {
 
@@ -28,24 +21,11 @@ public class AdjustmentTool extends Item {
         );
     }
 
-/**             => moved to events
+
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        if (!level.isClientSide) {
-            if(player.isShiftKeyDown()) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
+        if(stack.hasTag()) list.add(new TextComponent("Mode: " + stack.getTag().getString("mode").substring(0, 1).toUpperCase() + stack.getTag().getString("mode").substring(1)).withStyle(ChatFormatting.YELLOW));
+        list.add(new TranslatableComponent("message.particle_spawner.tool.desc").withStyle(ChatFormatting.GRAY));
+    }
 
-                CompoundTag tag = new CompoundTag();
-                ItemStack stack = new ItemStack(this);
-
-                tag.putString("mode", "strength"); //new TranslatableComponent("").getString()
-
-
-                stack.setTag(tag);
-
-                Minecraft.getInstance().player.sendMessage(new TextComponent(ChatFormatting.YELLOW + stack.getTag().getString("mode")), UUID.randomUUID());
-            }
-        }
-
-        return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide);
-    }**/
 }

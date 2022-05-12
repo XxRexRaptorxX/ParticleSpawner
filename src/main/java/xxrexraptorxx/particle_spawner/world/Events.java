@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.TickEvent;
@@ -75,7 +76,6 @@ public class Events {
         Level world = event.getWorld();
         BlockPos pos = event.getPos();
         Player player = event.getPlayer();
-        Random random = new Random();
         BlockState state = world.getBlockState(pos);
 
 
@@ -89,8 +89,8 @@ public class Events {
 
                 tag.putString("mode", "strength");
                 stack.setTag(tag);
-
-                if(world.isClientSide) player.sendMessage(new TextComponent(ChatFormatting.YELLOW + "Mode: " + stack.getTag().getString("mode").toUpperCase()), player.getUUID());
+                //TODO CYCLE!
+                if(world.isClientSide) player.sendMessage(new TextComponent(ChatFormatting.YELLOW + "Mode: " + stack.getTag().getString("mode").substring(0, 1).toUpperCase() + stack.getTag().getString("mode").substring(1)), player.getUUID());
 
 
             //BLOCKSTATE CHANGE
@@ -104,7 +104,7 @@ public class Events {
                     }
 
                     if (state.getValue(ParticleBlock.POWERED).booleanValue() == true) {
-                        if (stack.getTag().getString("mode").equals("type")) {
+                        if (stack.getTag().getString("mode").equals("type") || !stack.hasTag()) {
                             ParticleBlock.refreshBlockStates(world, pos, state, +1, 0, 0);
 
                         } else if (stack.getTag().getString("mode").equals("strength")) {
@@ -112,6 +112,10 @@ public class Events {
 
                         } else if (stack.getTag().getString("mode").equals("range")) {
                             ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, +1);
+
+                        } else if (stack.getTag().getString("mode").equals("break")) {
+                            world.removeBlock(pos, false);
+                            //TODO!!!!!!!!! DROP
 
                         } else {
                             ParticleSpawner.LOGGER.error("Unknown Tool Mode: " + stack.getTag().getString("mode"));
@@ -122,6 +126,3 @@ public class Events {
         }
     }
 }
-
-
-//world.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH) + 1), 11);
