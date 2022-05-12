@@ -9,22 +9,18 @@ import net.minecraftforge.fml.config.ModConfig;
 public class Config {
 
     public static final String CATEGORY_GENERAL = "general";
-    public static final String CATEGORY_WORLD = "world";
+    public static final String CATEGORY_BLOCKS = "blocks";
 
     public static ForgeConfigSpec CLIENT_CONFIG;
     public static ForgeConfigSpec COMMON_CONFIG;
 
     public static ForgeConfigSpec.BooleanValue UPDATE_CHECKER;
-    public static ForgeConfigSpec.BooleanValue WORLD_GENERATION;
-    public static ForgeConfigSpec.IntValue SANDSTONE_VEIN_RARITY;
-    public static ForgeConfigSpec.IntValue CLAY_VEIN_RARITY;
-    public static ForgeConfigSpec.IntValue DEEPSLATE_VEIN_RARITY;
-    public static ForgeConfigSpec.IntValue SAND_VEIN_RARITY;
-    public static ForgeConfigSpec.IntValue COBBLESTONE_VEIN_RARITY;
-    public static ForgeConfigSpec.IntValue STONE_VEIN_RARITY;
-    public static ForgeConfigSpec.IntValue SILVERFISH_BLOCK_VEIN_RARITY;
-    public static ForgeConfigSpec.BooleanValue GENERATE_QUICKSAND;
-    public static ForgeConfigSpec.BooleanValue GENERATE_MUD;
+
+    public static ForgeConfigSpec.IntValue PARTICLE_SPAWNER_STRENGTH_MAX_VALUE;
+    public static ForgeConfigSpec.IntValue PARTICLE_SPAWNER_RANGE_MAX_VALUE;
+    public static ForgeConfigSpec.IntValue PARTICLE_SPAWNER_TYPE_MAX_VALUE;
+
+
 
 
     public static void init() {
@@ -50,17 +46,10 @@ public class Config {
     public static void initCommon() {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 
-        builder.comment("World").push(CATEGORY_WORLD);
-        WORLD_GENERATION = builder.comment("Activate the world generation features of Enhanced Nature ").define("world_generation", true);
-        CLAY_VEIN_RARITY = builder.comment("The rarity of Clay veins (veins per chunk), 0 = no veins").defineInRange("clay_vein_rarity", 10, 0, 100);
-        SAND_VEIN_RARITY = builder.comment("The rarity of Sand veins (veins per chunk), 0 = no veins").defineInRange("sand_vein_rarity", 10, 0, 100);
-        SANDSTONE_VEIN_RARITY = builder.comment("The rarity of Sandstone veins (veins per chunk), 0 = no veins").defineInRange("sandstone_vein_rarity", 10, 0, 100);
-        COBBLESTONE_VEIN_RARITY = builder.comment("The rarity of Cobblestone and Cobbled Deepslate veins (veins per chunk), 0 = no veins").defineInRange("cobblestone_vein_rarity", 10, 0, 100);
-        STONE_VEIN_RARITY = builder.comment("The rarity of stone veins in deepslate (veins per chunk), 0 = no veins").defineInRange("stone_vein_rarity", 10, 0, 100);
-        DEEPSLATE_VEIN_RARITY = builder.comment("The rarity of Clay veins (veins per chunk), 0 = no veins").defineInRange("deepslate_vein_rarity", 1, 0, 100);
-        SILVERFISH_BLOCK_VEIN_RARITY = builder.comment("The rarity of Silverfish block veins (veins per chunk), 0 = no veins").defineInRange("silverfish_vein_rarity", 5, 0, 100);
-        GENERATE_QUICKSAND = builder.comment("Activate/Deactivate Quicksand generation in your world").define("quicksand_generation", true);
-        GENERATE_MUD = builder.comment("Activate/Deactivate Mud generation in your world").define("mud_generation", true);
+        builder.comment("Blocks").push(CATEGORY_BLOCKS);
+        PARTICLE_SPAWNER_RANGE_MAX_VALUE = builder.comment("The max value of particle range from the Particle Spawner").defineInRange("particle_spawner_range_max_value", 10, 1, 100);
+        PARTICLE_SPAWNER_STRENGTH_MAX_VALUE = builder.comment("The max value of particle strength from the Particle Spawner").defineInRange("particle_spawner_range_max_value", 10, 1, 100);
+        PARTICLE_SPAWNER_TYPE_MAX_VALUE = builder.comment("The The max value of particle type from the Particle Spawner [Don't change this value unless you have added new particles!]").defineInRange("particle_spawner_range_max_value", 10, 1, 100);
         COMMON_CONFIG = builder.build();
     }
 

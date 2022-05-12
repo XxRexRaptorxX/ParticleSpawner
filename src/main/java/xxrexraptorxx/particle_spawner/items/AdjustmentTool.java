@@ -28,7 +28,7 @@ public class AdjustmentTool extends Item {
         );
     }
 
-
+/**             => moved to events
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide) {
@@ -47,5 +47,5 @@ public class AdjustmentTool extends Item {
         }
 
         return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide);
-    }
+    }**/
 }

@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -17,6 +18,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -25,8 +28,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.common.Mod;
+import xxrexraptorxx.particle_spawner.blocks.ParticleBlock;
 import xxrexraptorxx.particle_spawner.main.ModBlocks;
 import xxrexraptorxx.particle_spawner.main.ModItems;
+import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
 import xxrexraptorxx.particle_spawner.main.References;
 import xxrexraptorxx.particle_spawner.utils.Config;
 
@@ -71,19 +76,52 @@ public class Events {
         BlockPos pos = event.getPos();
         Player player = event.getPlayer();
         Random random = new Random();
+        BlockState state = world.getBlockState(pos);
+
 
         if (stack.getItem() == ModItems.TOOL.get()) {
-            //Mode switch
-            if(player.isShiftKeyDown()) {
+
+            //TOOL MODE SWITCH
+            if (player.isShiftKeyDown()) {
+                world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
+
+                CompoundTag tag = new CompoundTag();
+
+                tag.putString("mode", "strength");
+                stack.setTag(tag);
+
+                if(world.isClientSide) player.sendMessage(new TextComponent(ChatFormatting.YELLOW + "Mode: " + stack.getTag().getString("mode").toUpperCase()), player.getUUID());
 
 
-            //BlockState changes
+            //BLOCKSTATE CHANGE
             } else {
-                if (world.getBlockState(pos).getBlock() == ModBlocks.PARTICLE.get()) {
+                world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
 
+                if (world.getBlockState(pos).getBlock() == ModBlocks.PARTICLE.get()) {
+                    //Power the block on first use
+                    if (state.getValue(ParticleBlock.POWERED).booleanValue() == false) {
+                        world.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH)), 11);
+                    }
+
+                    if (state.getValue(ParticleBlock.POWERED).booleanValue() == true) {
+                        if (stack.getTag().getString("mode").equals("type")) {
+                            ParticleBlock.refreshBlockStates(world, pos, state, +1, 0, 0);
+
+                        } else if (stack.getTag().getString("mode").equals("strength")) {
+                            ParticleBlock.refreshBlockStates(world, pos, state, 0, +1, 0);
+
+                        } else if (stack.getTag().getString("mode").equals("range")) {
+                            ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, +1);
+
+                        } else {
+                            ParticleSpawner.LOGGER.error("Unknown Tool Mode: " + stack.getTag().getString("mode"));
+                        }
+                    }
                 }
             }
         }
     }
-
 }
+
+
+//world.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH) + 1), 11);

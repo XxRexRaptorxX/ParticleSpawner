@@ -21,12 +21,15 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import xxrexraptorxx.particle_spawner.main.ModBlocks;
 import xxrexraptorxx.particle_spawner.main.ModItems;
+import xxrexraptorxx.particle_spawner.utils.Config;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -51,7 +54,25 @@ public class ParticleBlock extends Block {
 				.sound(SoundType.STONE)
 		);
 
-		this.registerDefaultState(this.defaultBlockState().setValue(POWERED, false).setValue(PARTICLE_TYPE, 0).setValue(PARTICLE_STRENGTH, 0).setValue(PARTICLE_RANGE, 0));
+		this.registerDefaultState(this.defaultBlockState().setValue(POWERED, true).setValue(PARTICLE_TYPE, 0).setValue(PARTICLE_STRENGTH, 0).setValue(PARTICLE_RANGE, 0));
+	}
+
+	/**
+	 * Allows easy setting of new blockstates
+	 */
+	public static void refreshBlockStates(Level level, BlockPos pos, BlockState state, Integer typeChange, Integer strengthChange, Integer rangeChange) {
+		//calculate the new blockstate value
+		int type = state.getValue(PARTICLE_TYPE) + typeChange;
+		int strength = state.getValue(PARTICLE_STRENGTH) + strengthChange;
+		int range = state.getValue(PARTICLE_RANGE) + rangeChange;
+
+		//test if new value is higher than the max value, and reset it if to high
+		if (type > Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get())         		type = type - Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get();
+		if (strength > Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get())        strength = strength - Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get();
+		if (range > Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get())         		range = range - Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get();
+
+		//update the block with the new values
+		level.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_TYPE, type).setValue(ParticleBlock.PARTICLE_STRENGTH, strength).setValue(ParticleBlock.PARTICLE_RANGE, range), 11);
 	}
 
 
@@ -70,19 +91,6 @@ public class ParticleBlock extends Block {
 	@Override
 	public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> list, TooltipFlag pFlag) {
 		//list.add(new TranslatableComponent("message.minetraps.spike.desc").withStyle(ChatFormatting.GRAY));
-	}
-
-
-	@Override
-	public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!world.isClientSide) { {
-				System.err.println("!!");
-				world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
-				world.setBlock(pos, this.defaultBlockState().setValue(PARTICLE_STRENGTH, state.getValue(PARTICLE_STRENGTH) + 1), 11);
-			}
-		}
-
-		return InteractionResult.sidedSuccess(world.isClientSide);
 	}
 
 
