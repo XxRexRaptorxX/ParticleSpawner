@@ -32,9 +32,9 @@ public class ParticleBlock extends Block {
 	protected static final VoxelShape CUSTOM_SHAPE = Block.box(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-	public static final IntegerProperty PARTICLE_TYPE = IntegerProperty.create("type", 0, 10);
-	public static final IntegerProperty PARTICLE_STRENGTH = IntegerProperty.create("strength", 0, 10);
-	public static final IntegerProperty PARTICLE_RANGE = IntegerProperty.create("range", 0, 10);
+	public static final IntegerProperty PARTICLE_TYPE = IntegerProperty.create("type", 1, 10);
+	public static final IntegerProperty PARTICLE_STRENGTH = IntegerProperty.create("strength", 1, 10);
+	public static final IntegerProperty PARTICLE_RANGE = IntegerProperty.create("range", 1, 10);
 
 
 	public ParticleBlock() {
@@ -45,7 +45,7 @@ public class ParticleBlock extends Block {
 				.sound(SoundType.STONE)
 		);
 
-		this.registerDefaultState(this.defaultBlockState().setValue(POWERED, true).setValue(PARTICLE_TYPE, 0).setValue(PARTICLE_STRENGTH, 0).setValue(PARTICLE_RANGE, 0));
+		this.registerDefaultState(this.defaultBlockState().setValue(POWERED, false).setValue(PARTICLE_TYPE, 1).setValue(PARTICLE_STRENGTH, 1).setValue(PARTICLE_RANGE, 1));
 	}
 
 	/**
@@ -58,9 +58,9 @@ public class ParticleBlock extends Block {
 		int range = state.getValue(PARTICLE_RANGE) + rangeChange;
 
 		//test if new value is higher than the max value, and reset it if to high
-		if (type > Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get())         		type = type - Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get();
-		if (strength > Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get())        strength = strength - Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get();
-		if (range > Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get())         		range = range - Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get();
+		if (type > Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get())         		type = type - Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get() + 1;
+		if (strength > Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get())        strength = strength - Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get() + 1;
+		if (range > Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get())         		range = range - Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get() + 1;
 
 		//update the block with the new values
 		level.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_TYPE, type).setValue(ParticleBlock.PARTICLE_STRENGTH, strength).setValue(ParticleBlock.PARTICLE_RANGE, range), 11);
@@ -73,7 +73,7 @@ public class ParticleBlock extends Block {
 
 		if(state.getValue(POWERED)) {
 			for (int i = 0; i < state.getValue(PARTICLE_STRENGTH); i++) {
-				level.addParticle(ParticleTypes.FLAME, true, (double) pos.getX() + state.getValue(PARTICLE_RANGE) + random.nextDouble(), (double) pos.getY() + state.getValue(PARTICLE_RANGE) + random.nextDouble(), (double) pos.getZ() + state.getValue(PARTICLE_RANGE) + random.nextDouble(), 0.0D, 0.0D, 0.0D);
+				level.addParticle(ParticleTypes.FLAME, false, (double) pos.getX() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getY() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getZ() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
@@ -81,7 +81,7 @@ public class ParticleBlock extends Block {
 
 	@Override
 	public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> list, TooltipFlag pFlag) {
-		//list.add(new TranslatableComponent("message.minetraps.spike.desc").withStyle(ChatFormatting.GRAY));
+		//TODO
 	}
 
 
@@ -102,18 +102,18 @@ public class ParticleBlock extends Block {
 	//Blockstates
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-		pBuilder.add(POWERED);
-		pBuilder.add(PARTICLE_TYPE);
-		pBuilder.add(PARTICLE_STRENGTH);
-		pBuilder.add(PARTICLE_RANGE);
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(POWERED);
+		builder.add(PARTICLE_TYPE);
+		builder.add(PARTICLE_STRENGTH);
+		builder.add(PARTICLE_RANGE);
 	}
 
 
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-		return this.defaultBlockState().setValue(POWERED, false).setValue(PARTICLE_TYPE, 0).setValue(PARTICLE_STRENGTH, 1).setValue(PARTICLE_RANGE, 0);
+		return this.defaultBlockState().setValue(POWERED, false).setValue(PARTICLE_TYPE, 1).setValue(PARTICLE_STRENGTH, 1).setValue(PARTICLE_RANGE, 1);
 	}
 
 

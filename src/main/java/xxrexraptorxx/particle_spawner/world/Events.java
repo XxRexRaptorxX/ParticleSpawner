@@ -15,6 +15,7 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -78,7 +79,6 @@ public class Events {
         Player player = event.getPlayer();
         BlockState state = world.getBlockState(pos);
 
-
         if (stack.getItem() == ModItems.TOOL.get()) {
 
             //TOOL MODE SWITCH
@@ -87,9 +87,9 @@ public class Events {
 
                 CompoundTag tag = new CompoundTag();
 
-                tag.putString("mode", "strength");
+                tag.putString("mode", cycleMode(stack));
                 stack.setTag(tag);
-                //TODO CYCLE!
+
                 if(world.isClientSide) player.sendMessage(new TextComponent(ChatFormatting.YELLOW + "Mode: " + stack.getTag().getString("mode").substring(0, 1).toUpperCase() + stack.getTag().getString("mode").substring(1)), player.getUUID());
 
 
@@ -103,6 +103,7 @@ public class Events {
                         world.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH)), 11);
                     }
 
+                    //Modes
                     if (state.getValue(ParticleBlock.POWERED).booleanValue() == true) {
                         if (stack.getTag().getString("mode").equals("type") || !stack.hasTag()) {
                             ParticleBlock.refreshBlockStates(world, pos, state, +1, 0, 0);
@@ -114,15 +115,33 @@ public class Events {
                             ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, +1);
 
                         } else if (stack.getTag().getString("mode").equals("break")) {
-                            world.removeBlock(pos, false);
-                            //TODO!!!!!!!!! DROP
+                            world.destroyBlock(pos, true);
 
                         } else {
                             ParticleSpawner.LOGGER.error("Unknown Tool Mode: " + stack.getTag().getString("mode"));
                         }
                     }
+
+                } else {
+                    if(world.isClientSide) player.sendMessage(new TextComponent(ChatFormatting.YELLOW + "Mode: " + stack.getTag().getString("mode").substring(0, 1).toUpperCase() + stack.getTag().getString("mode").substring(1)), player.getUUID());
+
                 }
             }
         }
+    }
+
+
+    private static String cycleMode(ItemStack stack) {
+        String mode = stack.getTag().getString("mode");
+
+        if (stack.hasTag()) {
+            if(mode == "type") return "strength";
+            if(mode == "strength") return "range";
+            if(mode == "range") return "break";
+            if(mode == "break") return "type";
+        } else {
+            return "type";
+        }
+        return "type";
     }
 }
