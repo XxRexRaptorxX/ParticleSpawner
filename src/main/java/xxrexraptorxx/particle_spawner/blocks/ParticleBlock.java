@@ -52,18 +52,21 @@ public class ParticleBlock extends Block {
 	 * Allows easy setting of new blockstates
 	 */
 	public static void refreshBlockStates(Level level, BlockPos pos, BlockState state, Integer typeChange, Integer strengthChange, Integer rangeChange) {
-		//calculate the new blockstate value
-		int type = state.getValue(PARTICLE_TYPE) + typeChange;
-		int strength = state.getValue(PARTICLE_STRENGTH) + strengthChange;
-		int range = state.getValue(PARTICLE_RANGE) + rangeChange;
+		if(state.getBlock() == ModBlocks.PARTICLE.get()) {
 
-		//test if new value is higher than the max value, and reset it if to high
-		if (type > Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get())         		type = type - Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get() + 1;
-		if (strength > Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get())        strength = strength - Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get() + 1;
-		if (range > Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get())         		range = range - Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get() + 1;
+			//calculate the new blockstate value
+			int type = state.getValue(PARTICLE_TYPE) + typeChange;
+			int strength = state.getValue(PARTICLE_STRENGTH) + strengthChange;
+			int range = state.getValue(PARTICLE_RANGE) + rangeChange;
 
-		//update the block with the new values
-		level.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_TYPE, type).setValue(ParticleBlock.PARTICLE_STRENGTH, strength).setValue(ParticleBlock.PARTICLE_RANGE, range), 11);
+			//test if new value is higher than the max value, and reset it if to high
+			if (type > Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get()) 			type = type - Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get() + 1;
+			if (strength > Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get()) 	strength = strength - Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get() + 1;
+			if (range > Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get()) 			range = range - Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get() + 1;
+
+			//update the block with the new values
+			level.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_TYPE, type).setValue(ParticleBlock.PARTICLE_STRENGTH, strength).setValue(ParticleBlock.PARTICLE_RANGE, range), 11);
+		}
 	}
 
 

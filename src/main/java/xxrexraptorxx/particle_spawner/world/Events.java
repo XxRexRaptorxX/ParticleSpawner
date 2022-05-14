@@ -81,8 +81,9 @@ public class Events {
 
         if (stack.getItem() == ModItems.TOOL.get()) {
 
-            //TOOL MODE SWITCH
-            if (player.isShiftKeyDown()) {
+            if (state.getBlock() != ModBlocks.PARTICLE.get()) {
+
+                //TOOL MODE SWITCH
                 world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
 
                 CompoundTag tag = new CompoundTag();
@@ -105,26 +106,36 @@ public class Events {
 
                     //Modes
                     if (state.getValue(ParticleBlock.POWERED).booleanValue() == true) {
-                        if (stack.getTag().getString("mode").equals("type") || !stack.hasTag()) {
-                            ParticleBlock.refreshBlockStates(world, pos, state, +1, 0, 0);
 
-                        } else if (stack.getTag().getString("mode").equals("strength")) {
-                            ParticleBlock.refreshBlockStates(world, pos, state, 0, +1, 0);
+                        if (player.isShiftKeyDown()) {      //subtract mode
+                            if (stack.getTag().getString("mode").equals("type") || !stack.hasTag()) {
+                                ParticleBlock.refreshBlockStates(world, pos, state, -1, 0, 0);
 
-                        } else if (stack.getTag().getString("mode").equals("range")) {
-                            ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, +1);
+                            } else if (stack.getTag().getString("mode").equals("strength")) {
+                                ParticleBlock.refreshBlockStates(world, pos, state, 0, -1, 0);
 
-                        } else if (stack.getTag().getString("mode").equals("break")) {
-                            world.destroyBlock(pos, true);
+                            } else if (stack.getTag().getString("mode").equals("range")) {
+                                ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, -1);
+                            }
 
-                        } else {
-                            ParticleSpawner.LOGGER.error("Unknown Tool Mode: " + stack.getTag().getString("mode"));
+                        } else {    //add mode
+                            if (stack.getTag().getString("mode").equals("type") || !stack.hasTag()) {
+                                ParticleBlock.refreshBlockStates(world, pos, state, +1, 0, 0);
+
+                            } else if (stack.getTag().getString("mode").equals("strength")) {
+                                ParticleBlock.refreshBlockStates(world, pos, state, 0, +1, 0);
+
+                            } else if (stack.getTag().getString("mode").equals("range")) {
+                                ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, +1);
+
+                            } else if (stack.getTag().getString("mode").equals("break")) {
+                                world.destroyBlock(pos, true);
+
+                            } else {
+                                ParticleSpawner.LOGGER.error("Unknown Tool Mode: " + stack.getTag().getString("mode"));
+                            }
                         }
                     }
-
-                } else {
-                    if(world.isClientSide) player.sendMessage(new TextComponent(ChatFormatting.YELLOW + "Mode: " + stack.getTag().getString("mode").substring(0, 1).toUpperCase() + stack.getTag().getString("mode").substring(1)), player.getUUID());
-
                 }
             }
         }
