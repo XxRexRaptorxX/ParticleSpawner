@@ -135,6 +135,8 @@ public class Events {
                                 ParticleSpawner.LOGGER.error("Unknown Tool Mode: " + stack.getTag().getString("mode"));
                             }
                         }
+
+                        if(world.isClientSide) player.sendMessage(new TextComponent(ChatFormatting.YELLOW + stack.getTag().getString("mode").substring(0, 1).toUpperCase() + stack.getTag().getString("mode").substring(1) + "set to: " + state.getValue(stack.getTag().getString("mode"))), player.getUUID());
                     }
                 }
             }
@@ -143,9 +145,10 @@ public class Events {
 
 
     private static String cycleMode(ItemStack stack) {
-        String mode = stack.getTag().getString("mode");
 
         if (stack.hasTag()) {
+            String mode = stack.getTag().getString("mode");
+
             if(mode == "type") return "strength";
             if(mode == "strength") return "range";
             if(mode == "range") return "break";

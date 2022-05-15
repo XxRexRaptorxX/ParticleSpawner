@@ -1,0 +1,21 @@
+{
+  "__comment": "Designed by RexRaptor with Blockbench",
+  "textures": {
+    "0": "particle_spawner:block/particle_spawner",
+    "particle": "particle_spawner:block/particle_spawner"
+  },
+  "elements": [
+    {
+      "from": [4, 4, 4],
+      "to": [12, 12, 12],
+      "faces": {
+        "north": {"uv": [4, 4, 12, 12], "texture": "#0"},
+        "east": {"uv": [4, 4, 12, 12], "texture": "#0"},
+        "south": {"uv": [4, 4, 12, 12], "texture": "#0"},
+        "west": {"uv": [4, 4, 12, 12], "texture": "#0"},
+        "up": {"uv": [4, 4, 12, 12], "texture": "#0"},
+        "down": {"uv": [4, 4, 12, 12], "texture": "#0"}
+      }
+    }
+  ]
+}

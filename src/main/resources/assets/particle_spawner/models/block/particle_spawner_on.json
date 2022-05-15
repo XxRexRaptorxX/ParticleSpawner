@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "particle_spawner:block/particle_spawner_on"
+  }
+}

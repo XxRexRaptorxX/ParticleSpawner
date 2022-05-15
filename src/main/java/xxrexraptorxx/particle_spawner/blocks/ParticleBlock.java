@@ -1,8 +1,10 @@
 package xxrexraptorxx.particle_spawner.blocks;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -29,7 +31,8 @@ import java.util.Random;
 
 public class ParticleBlock extends Block {
 
-	protected static final VoxelShape CUSTOM_SHAPE = Block.box(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
+	protected static final VoxelShape OFF_SHAPE = Block.box(4.0D, 4.0D, 4.0D, 12.0D, 12.0D, 12.0D);
+	protected static final VoxelShape ON_SHAPE = Block.box(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final IntegerProperty PARTICLE_TYPE = IntegerProperty.create("type", 1, 10);
@@ -84,22 +87,29 @@ public class ParticleBlock extends Block {
 
 	@Override
 	public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> list, TooltipFlag pFlag) {
-		//TODO
+		list.add(new TranslatableComponent("message.particle_spawner.spawner.desc").withStyle(ChatFormatting.GRAY));
 	}
 
 
 	//Shapes
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-		return Shapes.empty();
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		if (state.getValue(POWERED)) {
+			return Shapes.empty();
+		} else {
+			return OFF_SHAPE;
+		}
 	}
 
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return CUSTOM_SHAPE;
-	}
+		if (state.getValue(POWERED)) {
+			return ON_SHAPE;
+		} else {
+			return OFF_SHAPE;
+		}	}
 
 
 	//Blockstates
@@ -118,6 +128,9 @@ public class ParticleBlock extends Block {
 	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		return this.defaultBlockState().setValue(POWERED, false).setValue(PARTICLE_TYPE, 1).setValue(PARTICLE_STRENGTH, 1).setValue(PARTICLE_RANGE, 1);
 	}
+
+
+	public static getBlockstateByName()
 
 
 }
