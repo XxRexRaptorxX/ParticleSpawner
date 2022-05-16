@@ -86,7 +86,7 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 
 		if(state.getValue(POWERED)) {
 			for (int i = 0; i < state.getValue(PARTICLE_STRENGTH); i++) {
-				level.addParticle(ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), Config.ALWAYS_RENDER_PARTICLES.get(), (double) pos.getX() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getY() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getZ() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), 0.0D, 0.0D, 0.00);
+				level.addParticle(ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), Config.ALWAYS_RENDER_PARTICLES.get(), (double) pos.getX() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE)), (double) pos.getY() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE)), (double) pos.getZ() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE)), 0.0D, 0.0D, 0.00);
 			}
 		}
 	}
