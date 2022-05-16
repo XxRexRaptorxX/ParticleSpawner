@@ -16,6 +16,7 @@ public class Config {
 
     public static ForgeConfigSpec.BooleanValue UPDATE_CHECKER;
 
+    public static ForgeConfigSpec.BooleanValue ALWAYS_RENDER_PARTICLES;
     public static ForgeConfigSpec.IntValue PARTICLE_SPAWNER_STRENGTH_MAX_VALUE;
     public static ForgeConfigSpec.IntValue PARTICLE_SPAWNER_RANGE_MAX_VALUE;
     public static ForgeConfigSpec.IntValue PARTICLE_SPAWNER_TYPE_MAX_VALUE;
@@ -47,6 +48,7 @@ public class Config {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 
         builder.comment("Blocks").push(CATEGORY_BLOCKS);
+        ALWAYS_RENDER_PARTICLES = builder.comment("true = ignores the graphic settings and spawn always all particles").define("always_render_particles", true);
         PARTICLE_SPAWNER_RANGE_MAX_VALUE = builder.comment("The max value of particle range from the Particle Spawner").defineInRange("particle_spawner_range_max_value", 10, 1, 100);
         PARTICLE_SPAWNER_STRENGTH_MAX_VALUE = builder.comment("The max value of particle strength from the Particle Spawner").defineInRange("particle_spawner_strength_max_value", 10, 1, 100);
         PARTICLE_SPAWNER_TYPE_MAX_VALUE = builder.comment("The The max value of particle type from the Particle Spawner [Don't change this value unless you have added new particles!]").defineInRange("particle_spawner_type_max_value", 57, 1, 100);
