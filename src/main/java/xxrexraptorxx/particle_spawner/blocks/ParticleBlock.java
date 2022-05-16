@@ -2,6 +2,7 @@ package xxrexraptorxx.particle_spawner.blocks;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -10,14 +11,15 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -32,26 +34,27 @@ import java.util.List;
 import java.util.Random;
 
 
-public class ParticleBlock extends Block {
+public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 
 	protected static final VoxelShape OFF_SHAPE = Block.box(4.0D, 4.0D, 4.0D, 12.0D, 12.0D, 12.0D);
 	protected static final VoxelShape ON_SHAPE = Block.box(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final IntegerProperty PARTICLE_TYPE = IntegerProperty.create("type", 1, Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get());
 	public static final IntegerProperty PARTICLE_STRENGTH = IntegerProperty.create("strength", 1, Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get());
 	public static final IntegerProperty PARTICLE_RANGE = IntegerProperty.create("range", 1, Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get());
 
 
 	public ParticleBlock() {
-		super(Properties.of(Material.AIR)
+		super(Properties.of(Material.METAL)
 				.noCollission()
 				.noOcclusion()
 				.strength(-1.0F, 3600000.0F)
 				.sound(SoundType.STONE)
 		);
 
-		this.registerDefaultState(this.defaultBlockState().setValue(POWERED, false).setValue(PARTICLE_TYPE, 1).setValue(PARTICLE_STRENGTH, 1).setValue(PARTICLE_RANGE, 1));
+		this.registerDefaultState(this.defaultBlockState().setValue(POWERED, Boolean.valueOf(false)).setValue(PARTICLE_TYPE, 1).setValue(PARTICLE_STRENGTH, 1).setValue(PARTICLE_RANGE, 1).setValue(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
 	/**
@@ -82,7 +85,7 @@ public class ParticleBlock extends Block {
 
 		if(state.getValue(POWERED)) {
 			for (int i = 0; i < state.getValue(PARTICLE_STRENGTH); i++) {
-				level.addParticle((ParticleOptions) ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), false, (double) pos.getX() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getY() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getZ() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), 0.0D, 0.0D, 0.00);
+				level.addParticle(ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), false, (double) pos.getX() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getY() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getZ() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), 0.0D, 0.0D, 0.00);
 			}
 		}
 	}
@@ -119,17 +122,16 @@ public class ParticleBlock extends Block {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(POWERED);
-		builder.add(PARTICLE_TYPE);
-		builder.add(PARTICLE_STRENGTH);
-		builder.add(PARTICLE_RANGE);
+		builder.add(POWERED, PARTICLE_TYPE, PARTICLE_STRENGTH, PARTICLE_RANGE, WATERLOGGED);
 	}
 
 
 	@Nullable
 	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-		return this.defaultBlockState().setValue(POWERED, false).setValue(PARTICLE_TYPE, 1).setValue(PARTICLE_STRENGTH, 1).setValue(PARTICLE_RANGE, 1);
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+
+		return this.defaultBlockState().setValue(POWERED, false).setValue(PARTICLE_TYPE, 1).setValue(PARTICLE_STRENGTH, 1).setValue(PARTICLE_RANGE, 1).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
 	}
 
 
@@ -149,8 +151,26 @@ public class ParticleBlock extends Block {
 
 			default:
 				ParticleSpawner.LOGGER.error("Unknown BlockState");
-				return POWERED;
+				return WATERLOGGED;
 		}
+	}
+
+
+	// Waterlogging
+
+	@Override
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+		if (state.getValue(WATERLOGGED)) {
+			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+		}
+
+		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+	}
+
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 
