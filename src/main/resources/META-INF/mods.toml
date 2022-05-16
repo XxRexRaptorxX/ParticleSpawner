@@ -5,7 +5,7 @@ issueTrackerURL="https://www.curseforge.com/minecraft/mc-mods/particle-spawner/i
 
 [[mods]]
 modId="particle_spawner"
-version="1.0.0"
+version="1.1.0"
 displayName="Particle Spawner"
 itemIcon="minecraft:spawner"
 updateJSONURL="https://raw.githubusercontent.com/XxRexRaptorxX/Update-Checker/main/ParticleSpawner"
