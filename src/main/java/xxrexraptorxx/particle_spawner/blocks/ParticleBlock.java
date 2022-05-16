@@ -2,7 +2,7 @@ package xxrexraptorxx.particle_spawner.blocks;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
@@ -17,12 +17,15 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import xxrexraptorxx.particle_spawner.main.ModBlocks;
+import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
 import xxrexraptorxx.particle_spawner.utils.Config;
+import xxrexraptorxx.particle_spawner.utils.ParticleHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -35,9 +38,9 @@ public class ParticleBlock extends Block {
 	protected static final VoxelShape ON_SHAPE = Block.box(6.0D, 6.0D, 6.0D, 10.0D, 10.0D, 10.0D);
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-	public static final IntegerProperty PARTICLE_TYPE = IntegerProperty.create("type", 1, 10);
-	public static final IntegerProperty PARTICLE_STRENGTH = IntegerProperty.create("strength", 1, 10);
-	public static final IntegerProperty PARTICLE_RANGE = IntegerProperty.create("range", 1, 10);
+	public static final IntegerProperty PARTICLE_TYPE = IntegerProperty.create("type", 1, Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get());
+	public static final IntegerProperty PARTICLE_STRENGTH = IntegerProperty.create("strength", 1, Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get());
+	public static final IntegerProperty PARTICLE_RANGE = IntegerProperty.create("range", 1, Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get());
 
 
 	public ParticleBlock() {
@@ -79,7 +82,7 @@ public class ParticleBlock extends Block {
 
 		if(state.getValue(POWERED)) {
 			for (int i = 0; i < state.getValue(PARTICLE_STRENGTH); i++) {
-				level.addParticle(ParticleTypes.FLAME, false, (double) pos.getX() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getY() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getZ() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), 0.0D, 0.0D, 0.0D);
+				level.addParticle((ParticleOptions) ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), false, (double) pos.getX() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getY() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getZ() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
@@ -130,7 +133,25 @@ public class ParticleBlock extends Block {
 	}
 
 
-	public static getBlockstateByName()
+	public static Property getStateByName(String mode) {
+		switch (mode) {
+			case "strength":
+				return PARTICLE_STRENGTH;
+
+			case "range":
+				return PARTICLE_RANGE;
+
+			case "type":
+				return PARTICLE_TYPE;
+
+			case "powered":
+				return POWERED;
+
+			default:
+				ParticleSpawner.LOGGER.error("Unknown BlockState");
+				return POWERED;
+		}
+	}
 
 
 }
