@@ -14,7 +14,7 @@ logoFile="logo.png"
 #credits=""
 authors="XxRexRaptorxX (RexRaptor)"
 description='''
-Adds new particle blocks that beautify your world!
+This mod adds a spawner that is invisible itself and spawns different particles with adjustable strength and range!
 '''
 
 [[dependencies.particle_spawner]]
