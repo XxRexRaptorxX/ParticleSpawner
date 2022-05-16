@@ -22,6 +22,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -78,6 +80,7 @@ public class Events {
         BlockPos pos = event.getPos();
         Player player = event.getPlayer();
         BlockState state = world.getBlockState(pos);
+        FluidState fluidstate = player.getLevel().getFluidState(pos);
 
         if (stack.getItem() == ModItems.TOOL.get()) {
 
@@ -101,7 +104,7 @@ public class Events {
                 if (world.getBlockState(pos).getBlock() == ModBlocks.PARTICLE.get()) {
                     //Power the block on first use
                     if (state.getValue(ParticleBlock.POWERED).booleanValue() == false) {
-                        world.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH)), 11);
+                        world.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH)).setValue(ParticleBlock.WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER)), 11);
                     }
 
                     //Modes

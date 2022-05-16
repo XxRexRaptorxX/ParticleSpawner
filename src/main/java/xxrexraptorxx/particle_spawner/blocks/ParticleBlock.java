@@ -62,6 +62,7 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 	 */
 	public static void refreshBlockStates(Level level, BlockPos pos, BlockState state, Integer typeChange, Integer strengthChange, Integer rangeChange) {
 		if(state.getBlock() == ModBlocks.PARTICLE.get()) {
+			FluidState fluidstate = level.getFluidState(pos);
 
 			//calculate the new blockstate value
 			int type = state.getValue(PARTICLE_TYPE) + typeChange;
@@ -74,7 +75,7 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 			if (range > Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get()) 			range = range - Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get() + 1;
 
 			//update the block with the new values
-			level.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_TYPE, type).setValue(ParticleBlock.PARTICLE_STRENGTH, strength).setValue(ParticleBlock.PARTICLE_RANGE, range), 11);
+			level.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_TYPE, type).setValue(ParticleBlock.PARTICLE_STRENGTH, strength).setValue(ParticleBlock.PARTICLE_RANGE, range).setValue(ParticleBlock.WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER)), 11);
 		}
 	}
 
@@ -85,7 +86,7 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 
 		if(state.getValue(POWERED)) {
 			for (int i = 0; i < state.getValue(PARTICLE_STRENGTH); i++) {
-				level.addParticle(ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), false, (double) pos.getX() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getY() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getZ() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), 0.0D, 0.0D, 0.00);
+				level.addParticle(ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), Config.ALWAYS_RENDER_PARTICLES.get(), (double) pos.getX() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getY() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getZ() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), 0.0D, 0.0D, 0.00);
 			}
 		}
 	}
@@ -115,7 +116,8 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 			return ON_SHAPE;
 		} else {
 			return OFF_SHAPE;
-		}	}
+		}
+	}
 
 
 	//Blockstates
