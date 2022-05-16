@@ -82,7 +82,7 @@ public class ParticleBlock extends Block {
 
 		if(state.getValue(POWERED)) {
 			for (int i = 0; i < state.getValue(PARTICLE_STRENGTH); i++) {
-				level.addParticle((ParticleOptions) ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), false, (double) pos.getX() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getY() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getZ() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), 0.0D, 0.0D, 0.0D);
+				level.addParticle((ParticleOptions) ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), false, (double) pos.getX() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getY() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), (double) pos.getZ() + random.nextDouble(state.getValue(PARTICLE_RANGE) - (state.getValue(PARTICLE_RANGE) / 2)), 0.0D, 0.0D, 0.00);
 			}
 		}
 	}

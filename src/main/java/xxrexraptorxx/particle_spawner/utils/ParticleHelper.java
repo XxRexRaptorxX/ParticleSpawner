@@ -73,7 +73,7 @@ public class ParticleHelper {
                 return ParticleTypes.EFFECT;
 
             case 19:
-                return ParticleTypes.ELDER_GUARDIAN;
+                return ParticleTypes.SQUID_INK;
 
             case 20:
                 return ParticleTypes.ELECTRIC_SPARK;
@@ -107,6 +107,84 @@ public class ParticleHelper {
 
             case 30:
                 return ParticleTypes.FALLING_SPORE_BLOSSOM;
+
+            case 31:
+                return ParticleTypes.FIREWORK;
+
+            case 32:
+                return ParticleTypes.FLASH;
+
+            case 33:
+                return ParticleTypes.GLOW;
+
+            case 34:
+                return ParticleTypes.GLOW_SQUID_INK;
+
+            case 35:
+                return ParticleTypes.HAPPY_VILLAGER;
+
+            case 36:
+                return ParticleTypes.HEART;
+
+            case 37:
+                return ParticleTypes.NOTE;
+
+            case 38:
+                return ParticleTypes.INSTANT_EFFECT;
+
+            case 39:
+                return ParticleTypes.LAVA;
+
+            case 40:
+                return ParticleTypes.PORTAL;
+
+            case 41:
+                return ParticleTypes.POOF;
+
+            case 42:
+                return ParticleTypes.RAIN;
+
+            case 43:
+                return ParticleTypes.LARGE_SMOKE;
+
+            case 44:
+                return ParticleTypes.SMALL_FLAME;
+
+            case 45:
+                return ParticleTypes.SMOKE;
+
+            case 46:
+                return ParticleTypes.SNEEZE;
+
+            case 47:
+                return ParticleTypes.SNOWFLAKE;
+
+            case 48:
+                return ParticleTypes.SOUL;
+
+            case 49:
+                return ParticleTypes.SOUL_FIRE_FLAME;
+
+            case 50:
+                return ParticleTypes.SWEEP_ATTACK;
+
+            case 52:
+                return ParticleTypes.UNDERWATER;
+
+            case 53:
+                return ParticleTypes.WARPED_SPORE;
+
+            case 54:
+                return ParticleTypes.WAX_OFF;
+
+            case 55:
+                return ParticleTypes.WAX_ON;
+
+            case 56:
+                return ParticleTypes.WHITE_ASH;
+
+            case 57:
+                return ParticleTypes.WITCH;
 
             default:
                 ParticleSpawner.LOGGER.error("Unknown Particle");
