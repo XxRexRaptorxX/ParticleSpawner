@@ -9,13 +9,13 @@
     
   "key": {
     "#": {
-      "item": "minecraft:redstone_block"
+      "item": "minecraft:amethyst_cluster"
     },
     "X": {
       "item": "minecraft:iron_ingot"
     },
     "O": {
-      "item": "minecraft:redstone"
+      "item": "minecraft:quartz"
     }
   },
   
