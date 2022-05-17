@@ -186,6 +186,9 @@ public class ParticleHelper {
             case 57:
                 return ParticleTypes.WITCH;
 
+            case 58:
+                return ParticleTypes.ENCHANT;
+
             default:
                 ParticleSpawner.LOGGER.error("Unknown Particle");
                 return ParticleTypes.CLOUD;
