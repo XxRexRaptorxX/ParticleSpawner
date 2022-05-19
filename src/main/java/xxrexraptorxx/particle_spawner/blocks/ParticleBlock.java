@@ -71,10 +71,15 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 			int strength = state.getValue(PARTICLE_STRENGTH) + strengthChange;
 			int range = state.getValue(PARTICLE_RANGE) + rangeChange;
 
-			//test if new value is higher than the max value or 0, and reset it if to high
-			if (type > Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get() || type == 0) 				type = 1;
-			if (strength > Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get() || strength == 0) 	strength = 1;
-			if (range > Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get() || range == 0) 			range = 1;
+			//test if new value is higher than the max value, and reset it if to high
+			if (type > Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get()) 			type = 1;
+			if (strength > Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get()) 	strength = 1;
+			if (range > Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get()) 			range = 1;
+
+			//test if the new value is 0 (because of the subtract mode) and set it to the max value
+			if (type == 0) 		type = Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get();
+			if (strength == 0)	 	strength = Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get();
+			if (range == 0) 		range = Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get();
 
 			//update the block with the new values
 			level.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_TYPE, type).setValue(ParticleBlock.PARTICLE_STRENGTH, strength).setValue(ParticleBlock.PARTICLE_RANGE, range).setValue(ParticleBlock.WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER)), 11);
