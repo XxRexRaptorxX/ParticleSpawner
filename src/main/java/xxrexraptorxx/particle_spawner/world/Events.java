@@ -3,11 +3,11 @@ package xxrexraptorxx.particle_spawner.world;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -33,7 +33,9 @@ import java.util.UUID;
 public class Events {
 
 
-    /** Update-Checker **/
+    /**
+     * Update-Checker
+     **/
     private static boolean hasShownUp = false;
 
     @SubscribeEvent
@@ -59,9 +61,11 @@ public class Events {
     }
 
 
-    /** Adjustment Tool **/
+    /**
+     * Adjustment Tool
+     **/
     @SubscribeEvent
-    public static void onInteract (PlayerInteractEvent.RightClickBlock event) {
+    public static void onInteract(PlayerInteractEvent.RightClickBlock event) {
         ItemStack stack = event.getItemStack();
         Level world = event.getWorld();
         BlockPos pos = event.getPos();
@@ -69,67 +73,52 @@ public class Events {
         BlockState state = world.getBlockState(pos);
         FluidState fluidstate = player.getLevel().getFluidState(pos);
 
-        if (stack.getItem() == ModItems.TOOL.get()) {
+        if (stack.getItem() == ModItems.TOOL.get() && state.getBlock() == ModBlocks.PARTICLE.get()) {
 
-            if (state.getBlock() != ModBlocks.PARTICLE.get()) {
-                //TOOL MODE SWITCH             => moved to AdjustmentTool.class
-/**                world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
+            world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
 
-                CompoundTag tag = new CompoundTag();
+            //Power the block on first use
+            if (state.getValue(ParticleBlock.POWERED).booleanValue() == false) {
+                world.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH)).setValue(ParticleBlock.WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER)), 11);
+            }
 
-                tag.putString("mode", cycleMode(stack));
-                stack.setTag(tag);
+            //Modes
+            if (state.getValue(ParticleBlock.POWERED).booleanValue() == true) {
 
-                if(world.isClientSide) player.sendMessage(new TextComponent(ChatFormatting.YELLOW + "Mode: " + stack.getTag().getString("mode").substring(0, 1).toUpperCase() + stack.getTag().getString("mode").substring(1)), player.getUUID());
+                if (player.isShiftKeyDown()) {      //subtract mode
+                    if (stack.getTag().getString("mode").equals("type") || !stack.hasTag()) {
+                        ParticleBlock.refreshBlockStates(world, pos, state, -1, 0, 0);
 
-**/
-            //BLOCKSTATE CHANGE
-            } else {
-                world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
+                    } else if (stack.getTag().getString("mode").equals("strength")) {
+                        ParticleBlock.refreshBlockStates(world, pos, state, 0, -1, 0);
 
-                if (world.getBlockState(pos).getBlock() == ModBlocks.PARTICLE.get()) {
-                    //Power the block on first use
-                    if (state.getValue(ParticleBlock.POWERED).booleanValue() == false) {
-                        world.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH)).setValue(ParticleBlock.WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER)), 11);
+                    } else if (stack.getTag().getString("mode").equals("range")) {
+                        ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, -1);
                     }
 
-                    //Modes
-                    if (state.getValue(ParticleBlock.POWERED).booleanValue() == true) {
+                } else {    //add mode
+                    if (stack.getTag().getString("mode").equals("break")) {
+                        ItemEntity drop = new ItemEntity(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 1.5D, (double) pos.getZ() + 0.5D, new ItemStack(ModBlocks.PARTICLE.get()));
+                        world.destroyBlock(pos, false);
+                        world.addFreshEntity(drop);
 
-                        if (player.isShiftKeyDown()) {      //subtract mode
-                            if (stack.getTag().getString("mode").equals("type") || !stack.hasTag()) {
-                                ParticleBlock.refreshBlockStates(world, pos, state, -1, 0, 0);
+                    } else if (stack.getTag().getString("mode").equals("type") || !stack.hasTag()) {
+                        ParticleBlock.refreshBlockStates(world, pos, state, +1, 0, 0);
 
-                            } else if (stack.getTag().getString("mode").equals("strength")) {
-                                ParticleBlock.refreshBlockStates(world, pos, state, 0, -1, 0);
+                    } else if (stack.getTag().getString("mode").equals("strength")) {
+                        ParticleBlock.refreshBlockStates(world, pos, state, 0, +1, 0);
 
-                            } else if (stack.getTag().getString("mode").equals("range")) {
-                                ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, -1);
-                            }
+                    } else if (stack.getTag().getString("mode").equals("range")) {
+                        ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, +1);
 
-                        } else {    //add mode
-                            if (stack.getTag().getString("mode").equals("type") || !stack.hasTag()) {
-                                ParticleBlock.refreshBlockStates(world, pos, state, +1, 0, 0);
-
-                            } else if (stack.getTag().getString("mode").equals("strength")) {
-                                ParticleBlock.refreshBlockStates(world, pos, state, 0, +1, 0);
-
-                            } else if (stack.getTag().getString("mode").equals("range")) {
-                                ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, +1);
-
-                            } else if (stack.getTag().getString("mode").equals("break")) {
-                                world.destroyBlock(pos, true);
-
-                            } else {
-                                ParticleSpawner.LOGGER.error("Unknown Tool Mode: " + stack.getTag().getString("mode"));
-                            }
-                        }
-
-                        if(world.isClientSide) {
-                            player.sendMessage(new TextComponent(ChatFormatting.YELLOW + stack.getTag().getString("mode").substring(0, 1).toUpperCase() + stack.getTag().getString("mode").substring(1)
-                                    +": " + state.getValue(ParticleBlock.getStateByName(stack.getTag().getString("mode")))), player.getUUID());
-                        }
+                    } else {
+                        ParticleSpawner.LOGGER.error("Unknown Tool Mode: " + stack.getTag().getString("mode"));
                     }
+                }
+
+                if (world.isClientSide) {
+                    player.sendMessage(new TextComponent(ChatFormatting.YELLOW + stack.getTag().getString("mode").substring(0, 1).toUpperCase() + stack.getTag().getString("mode").substring(1)
+                            + ": " + state.getValue(ParticleBlock.getStateByName(stack.getTag().getString("mode")))), player.getUUID());
                 }
             }
         }
