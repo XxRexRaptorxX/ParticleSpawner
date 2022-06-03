@@ -72,9 +72,8 @@ public class Events {
         if (stack.getItem() == ModItems.TOOL.get()) {
 
             if (state.getBlock() != ModBlocks.PARTICLE.get()) {
-
-                //TOOL MODE SWITCH
-                world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
+                //TOOL MODE SWITCH             => moved to AdjustmentTool.class
+/**                world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
 
                 CompoundTag tag = new CompoundTag();
 
@@ -83,7 +82,7 @@ public class Events {
 
                 if(world.isClientSide) player.sendMessage(new TextComponent(ChatFormatting.YELLOW + "Mode: " + stack.getTag().getString("mode").substring(0, 1).toUpperCase() + stack.getTag().getString("mode").substring(1)), player.getUUID());
 
-
+**/
             //BLOCKSTATE CHANGE
             } else {
                 world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
@@ -137,17 +136,4 @@ public class Events {
     }
 
 
-    private static String cycleMode(ItemStack stack) {
-        if (stack.hasTag()) {
-            String mode = stack.getTag().getString("mode");
-
-            if(mode == "type") return "strength";
-            if(mode == "strength") return "range";
-            if(mode == "range") return "break";
-            if(mode == "break") return "type";
-        } else {
-            return "type";
-        }
-        return "type";
-    }
 }
