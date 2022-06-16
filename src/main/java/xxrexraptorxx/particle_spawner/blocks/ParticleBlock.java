@@ -4,7 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -88,12 +88,13 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
-		super.animateTick(state, level, pos, random);
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource randomSource) {
+		super.animateTick(state, level, pos, randomSource);
+		Random random = new Random();
 
 		if(state.getValue(POWERED)) {
 			for (int i = 0; i < state.getValue(PARTICLE_STRENGTH); i++) {
-				level.addParticle(ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), Config.ALWAYS_RENDER_PARTICLES.get(), (double) pos.getX() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE)), (double) pos.getY() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE)), (double) pos.getZ() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE)), 0.0D, 0.0D, 0.00);
+				level.addParticle(ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), Config.ALWAYS_RENDER_PARTICLES.get(), (double) pos.getX() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE).doubleValue()), (double) pos.getY() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE)), (double) pos.getZ() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE)), 0.0D, 0.0D, 0.00);
 			}
 		}
 	}
@@ -101,7 +102,7 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> list, TooltipFlag pFlag) {
-		list.add(new TranslatableComponent("message.particle_spawner.spawner.desc").withStyle(ChatFormatting.GRAY));
+		list.add(Component.literal("message.particle_spawner.spawner.desc").withStyle(ChatFormatting.GRAY));
 	}
 
 
