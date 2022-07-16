@@ -43,9 +43,9 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	public static final IntegerProperty PARTICLE_TYPE = IntegerProperty.create("type", 1, Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get());
-	public static final IntegerProperty PARTICLE_STRENGTH = IntegerProperty.create("strength", 1, Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get());
-	public static final IntegerProperty PARTICLE_RANGE = IntegerProperty.create("range", 1, Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get());
+	public static final IntegerProperty PARTICLE_TYPE = IntegerProperty.create("type", 1, 10);
+	public static final IntegerProperty PARTICLE_STRENGTH = IntegerProperty.create("strength", 1, 10);
+	public static final IntegerProperty PARTICLE_RANGE = IntegerProperty.create("range", 1, 58);
 
 
 	public ParticleBlock() {
@@ -102,7 +102,7 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> list, TooltipFlag pFlag) {
-		list.add(Component.literal("message.particle_spawner.spawner.desc").withStyle(ChatFormatting.GRAY));
+		list.add(Component.translatable("message.particle_spawner.spawner.desc").withStyle(ChatFormatting.GRAY));
 	}
 
 

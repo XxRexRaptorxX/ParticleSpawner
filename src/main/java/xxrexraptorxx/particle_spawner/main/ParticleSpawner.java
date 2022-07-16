@@ -20,10 +20,9 @@ public class ParticleSpawner {
     public static final Logger LOGGER = LogManager.getLogger();
 
     public ParticleSpawner() {
-
+        Config.init();
         ModBlocks.init();
         ModItems.init();
-        Config.init();
 
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
         modbus.addListener(this::clientSetup);
