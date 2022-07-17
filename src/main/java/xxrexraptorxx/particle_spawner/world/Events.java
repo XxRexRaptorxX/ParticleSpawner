@@ -21,6 +21,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.common.Mod;
 import xxrexraptorxx.particle_spawner.blocks.ParticleBlock;
+import xxrexraptorxx.particle_spawner.items.AdjustmentTool;
 import xxrexraptorxx.particle_spawner.main.ModBlocks;
 import xxrexraptorxx.particle_spawner.main.ModItems;
 import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
@@ -73,10 +74,15 @@ public class Events {
         BlockState state = world.getBlockState(pos);
         FluidState fluidstate = player.getLevel().getFluidState(pos);
 
+        //test if adjustment tool is in hand and particle spawner is clicked
         if (stack.getItem() == ModItems.TOOL.get() && state.getBlock() == ModBlocks.PARTICLE.get()) {
 
             world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
 
+            //sets a mode if no tag is present
+            if (!stack.hasTag()) {
+                AdjustmentTool.cycleMode(stack);
+            }
             //Power the block on first use
             if (state.getValue(ParticleBlock.POWERED).booleanValue() == false) {
                 world.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH)).setValue(ParticleBlock.WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER)), 11);
@@ -116,6 +122,7 @@ public class Events {
                     }
                 }
 
+                //shows the state in chat
                 if (world.isClientSide) {
                     player.sendMessage(new TextComponent(ChatFormatting.YELLOW + stack.getTag().getString("mode").substring(0, 1).toUpperCase() + stack.getTag().getString("mode").substring(1)
                             + ": " + state.getValue(ParticleBlock.getStateByName(stack.getTag().getString("mode")))), player.getUUID());

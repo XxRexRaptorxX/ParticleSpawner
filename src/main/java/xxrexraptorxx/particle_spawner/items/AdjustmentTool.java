@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -86,9 +87,11 @@ public class AdjustmentTool extends Item {
         } else {
             CompoundTag tag = new CompoundTag();
 
-            tag.putString("mode", cycleMode(stack));
+            tag.putString("mode", "type");
             stack.setTag(tag);
+            return "type";
         }
-        return null;
     }
+
+
 }
