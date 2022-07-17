@@ -28,6 +28,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.common.Mod;
 import xxrexraptorxx.particle_spawner.blocks.ParticleBlock;
+import xxrexraptorxx.particle_spawner.items.AdjustmentTool;
 import xxrexraptorxx.particle_spawner.main.ModBlocks;
 import xxrexraptorxx.particle_spawner.main.ModItems;
 import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
@@ -82,9 +83,15 @@ public class Events {
         BlockState state = world.getBlockState(pos);
         FluidState fluidstate = player.getLevel().getFluidState(pos);
 
+        //test if adjustment tool is in hand and particle spawner is clicked
         if (stack.getItem() == ModItems.TOOL.get() && state.getBlock() == ModBlocks.PARTICLE.get()) {
 
             world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
+
+            //sets a mode if no tag is present
+            if (!stack.hasTag()) {
+                AdjustmentTool.cycleMode(stack);
+            }
 
             //Power the block on first use
             if (state.getValue(ParticleBlock.POWERED).booleanValue() == false) {

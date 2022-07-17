@@ -62,6 +62,7 @@ public class AdjustmentTool extends Item {
     }
 
 
+
     public static String cycleMode(ItemStack stack) {
         if (stack.hasTag()) {
             String mode = stack.getTag().getString("mode");
@@ -79,9 +80,10 @@ public class AdjustmentTool extends Item {
         } else {
             CompoundTag tag = new CompoundTag();
 
-            tag.putString("mode", cycleMode(stack));
+            tag.putString("mode", "type");
             stack.setTag(tag);
+            return "type";
         }
-        return null;
     }
+
 }
