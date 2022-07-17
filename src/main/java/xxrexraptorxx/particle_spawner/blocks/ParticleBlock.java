@@ -43,9 +43,9 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	public static final IntegerProperty PARTICLE_TYPE = IntegerProperty.create("type", 1, 10);
-	public static final IntegerProperty PARTICLE_STRENGTH = IntegerProperty.create("strength", 1, 10);
-	public static final IntegerProperty PARTICLE_RANGE = IntegerProperty.create("range", 1, 58);
+	public static final IntegerProperty PARTICLE_TYPE = IntegerProperty.create("type", 1, 58);			//TODO wip
+	public static final IntegerProperty PARTICLE_STRENGTH = IntegerProperty.create("strength", 1, 10);	//TODO wip
+	public static final IntegerProperty PARTICLE_RANGE = IntegerProperty.create("range", 1, 10);			//TODO wip
 
 
 	public ParticleBlock() {
@@ -72,14 +72,14 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 			int range = state.getValue(PARTICLE_RANGE) + rangeChange;
 
 			//test if new value is higher than the max value, and reset it if to high
-			if (type > Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get()) 			type = 1;
-			if (strength > Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get()) 	strength = 1;
-			if (range > Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get()) 			range = 1;
+			if (type > Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE) 			type = 1;
+			if (strength > Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE) 	strength = 1;
+			if (range > Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE) 			range = 1;
 
 			//test if the new value is 0 (because of the subtract mode) and set it to the max value
-			if (type == 0) 		type = Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE.get();
-			if (strength == 0)	 	strength = Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE.get();
-			if (range == 0) 		range = Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE.get();
+			if (type == 0) 		type = Config.PARTICLE_SPAWNER_TYPE_MAX_VALUE;
+			if (strength == 0)	 	strength = Config.PARTICLE_SPAWNER_STRENGTH_MAX_VALUE;
+			if (range == 0) 		range = Config.PARTICLE_SPAWNER_RANGE_MAX_VALUE;
 
 			//update the block with the new values
 			level.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_TYPE, type).setValue(ParticleBlock.PARTICLE_STRENGTH, strength).setValue(ParticleBlock.PARTICLE_RANGE, range).setValue(ParticleBlock.WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER)), 11);

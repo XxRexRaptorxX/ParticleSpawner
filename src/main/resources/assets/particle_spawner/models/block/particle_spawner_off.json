@@ -1,5 +1,6 @@
 {
   "__comment": "Designed by RexRaptor with Blockbench",
+  "render_type": "cutout_mipped",
   "textures": {
     "0": "particle_spawner:block/particle_spawner",
     "particle": "particle_spawner:block/particle_spawner"

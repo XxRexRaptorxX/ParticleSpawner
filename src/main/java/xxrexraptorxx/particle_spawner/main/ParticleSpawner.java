@@ -25,12 +25,6 @@ public class ParticleSpawner {
         ModItems.init();
 
         IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
-        modbus.addListener(this::clientSetup);
     }
 
-
-    private void clientSetup(final FMLClientSetupEvent event) {
-
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.PARTICLE.get(), RenderType.cutoutMipped());
-    }
 }

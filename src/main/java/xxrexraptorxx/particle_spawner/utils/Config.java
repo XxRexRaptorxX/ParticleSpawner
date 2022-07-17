@@ -18,9 +18,9 @@ public class Config {
     public static ForgeConfigSpec.BooleanValue PATREON_REWARDS;
 
     public static ForgeConfigSpec.BooleanValue ALWAYS_RENDER_PARTICLES;
-    public static ForgeConfigSpec.IntValue PARTICLE_SPAWNER_STRENGTH_MAX_VALUE;
-    public static ForgeConfigSpec.IntValue PARTICLE_SPAWNER_RANGE_MAX_VALUE;
-    public static ForgeConfigSpec.IntValue PARTICLE_SPAWNER_TYPE_MAX_VALUE;
+    public static Integer PARTICLE_SPAWNER_STRENGTH_MAX_VALUE = 10;         //TODO wip
+    public static Integer PARTICLE_SPAWNER_RANGE_MAX_VALUE = 10;            //TODO wip
+    public static Integer PARTICLE_SPAWNER_TYPE_MAX_VALUE = 58;         //TODO wip
 
 
 

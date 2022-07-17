@@ -77,9 +77,9 @@ public class Events {
     @SubscribeEvent
     public static void onInteract(PlayerInteractEvent.RightClickBlock event) {
         ItemStack stack = event.getItemStack();
-        Level world = event.getWorld();
+        Level world = event.getLevel();
         BlockPos pos = event.getPos();
-        Player player = event.getPlayer();
+        Player player = event.getEntity();
         BlockState state = world.getBlockState(pos);
         FluidState fluidstate = player.getLevel().getFluidState(pos);
 
@@ -147,7 +147,7 @@ public class Events {
      */
     @SubscribeEvent
     public static void SupporterRewards(PlayerEvent.PlayerLoggedInEvent event) {
-        Player player = event.getPlayer();
+        Player player = event.getEntity();
         Level world = player.getLevel();
 
         if (Config.PATREON_REWARDS.get()) {
