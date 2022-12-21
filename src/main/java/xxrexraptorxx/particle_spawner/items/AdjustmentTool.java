@@ -15,7 +15,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import xxrexraptorxx.particle_spawner.main.ModBlocks;
 import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
-import xxrexraptorxx.particle_spawner.utils.CreativeTab;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -24,7 +23,6 @@ public class AdjustmentTool extends Item {
 
     public AdjustmentTool() {
         super(new Properties()
-                .tab(CreativeTab.MOD_TAB)
                 .stacksTo(1)
         );
     }
@@ -47,7 +45,7 @@ public class AdjustmentTool extends Item {
         if (level.getBlockState(pos).getBlock() != ModBlocks.PARTICLE.get()) {
 
             //TOOL MODE SWITCH
-            level.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
+            level.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
 
             CompoundTag tag = new CompoundTag();
             ItemStack stack = event.getItemInHand();

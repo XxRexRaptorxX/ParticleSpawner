@@ -86,7 +86,7 @@ public class Events {
         //test if adjustment tool is in hand and particle spawner is clicked
         if (stack.getItem() == ModItems.TOOL.get() && state.getBlock() == ModBlocks.PARTICLE.get()) {
 
-            world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundSource.BLOCKS, 1.0f, 1.0f);
+            world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
 
             //sets a mode if no tag is present
             if (!stack.hasTag()) {

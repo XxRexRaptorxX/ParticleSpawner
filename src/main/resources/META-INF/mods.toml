@@ -1,32 +1,31 @@
 modLoader="javafml"
-loaderVersion="[41,)"
+loaderVersion="[44,)"
 license="All rights reserved"
 issueTrackerURL="https://www.curseforge.com/minecraft/mc-mods/particle-spawner/issues"
 
 [[mods]]
 modId="particle_spawner"
-version="1.1.5"
+version="1.1.6"
 displayName="Particle Spawner"
 itemIcon="minecraft:spawner"
-updateJSONURL="https://raw.githubusercontent.com/XxRexRaptorxX/Update-Checker/main/ParticleSpawner"
+updateJSONURL="https://raw.githubusercontent.com/XxRexRaptorxX/Update-Checker/main/ParticleSpawner.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/particle-spawner"
 logoFile="logo.png"
 #credits=""
 authors="XxRexRaptorxX (RexRaptor)"
 description='''
-This mod adds a spawner that is invisible itself and spawns different particles with adjustable strength and range!
-'''
+This mod adds a spawner that is invisible itself and spawns different particles with adjustable strength and range!'''
 
 [[dependencies.particle_spawner]]
     modId="forge"
     mandatory=true
-    versionRange="[41.0.98,)"
+    versionRange="[44,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.particle_spawner]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19,1.20)"
+    versionRange="[1.19.3,1.20)"
     ordering="NONE"
     side="BOTH"
