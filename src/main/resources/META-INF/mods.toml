@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[44,)"
+loaderVersion="[45,)"
 license="All rights reserved"
 issueTrackerURL="https://www.curseforge.com/minecraft/mc-mods/particle-spawner/issues"
 
 [[mods]]
 modId="particle_spawner"
-version="1.1.6"
+version="1.1.7"
 displayName="Particle Spawner"
 itemIcon="minecraft:spawner"
 updateJSONURL="https://raw.githubusercontent.com/XxRexRaptorxX/Update-Checker/main/ParticleSpawner.json"
@@ -19,13 +19,13 @@ This mod adds a spawner that is invisible itself and spawns different particles 
 [[dependencies.particle_spawner]]
     modId="forge"
     mandatory=true
-    versionRange="[44,)"
+    versionRange="[45,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.particle_spawner]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.3,1.20)"
+    versionRange="[1.19.4,1.20)"
     ordering="NONE"
     side="BOTH"

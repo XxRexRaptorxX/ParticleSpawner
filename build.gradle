@@ -1,6 +1,3 @@
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.jvm.toolchain.JavaLanguageVersion
-
 buildscript {
     repositories {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
@@ -51,10 +48,6 @@ minecraft {
             // You can set various levels here.
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
-
-            // Patchouli mixin fix
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
 
             mods {
@@ -129,11 +122,6 @@ repositories {
     }
 
     maven {
-        // patchouli
-        url 'https://maven.blamejared.com'
-    }
-
-    maven {
         // location of the cursemaven
         url 'https://www.cursemaven.com'
         content {
@@ -147,11 +135,13 @@ dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
     //JEI
-    //compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
-    //compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}")
-    //// at runtime, use the full JEI
-    //runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-common:${jei_version}")
-    //runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.19.3-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.19.3-forge-api:${jei_version}")
+    // at runtime, use the full JEI
+    //runtimeOnly fg.deobf("mezz.jei:jei-1.19.3-common:${jei_version}")
+    //runtimeOnly fg.deobf("mezz.jei:jei-1.19.3-forge:${jei_version}")
+
+    //runtimeOnly fg.deobf("curse.maven:shutup_experimental_settings-407174:${ses_version}")
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

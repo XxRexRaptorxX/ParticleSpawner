@@ -37,7 +37,7 @@ public class ParticleSpawner {
     @SubscribeEvent
     public static void registerTabs(final CreativeModeTabEvent.Register event) {
         event.registerCreativeModeTab(CREATIVE_TAB, (cf) -> cf.icon(() -> new ItemStack(ModBlocks.PARTICLE.get()))
-                .title(Component.translatable("itemGroup." + References.MODID + "_tab")).displayItems((flagSet, output, ifSth) -> {
+                .title(Component.translatable("itemGroup." + References.MODID + "_tab")).displayItems((p_270258_, output) -> {
                     output.accept(ModBlocks.PARTICLE.get());
                     output.accept(ModItems.TOOL.get());
                 })
