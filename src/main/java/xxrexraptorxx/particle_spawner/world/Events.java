@@ -29,10 +29,10 @@ import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.common.Mod;
 import xxrexraptorxx.particle_spawner.blocks.ParticleBlock;
 import xxrexraptorxx.particle_spawner.items.AdjustmentTool;
-import xxrexraptorxx.particle_spawner.main.ModBlocks;
-import xxrexraptorxx.particle_spawner.main.ModItems;
 import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
 import xxrexraptorxx.particle_spawner.main.References;
+import xxrexraptorxx.particle_spawner.registry.ModBlocks;
+import xxrexraptorxx.particle_spawner.registry.ModItems;
 import xxrexraptorxx.particle_spawner.utils.Config;
 
 import java.net.MalformedURLException;
@@ -81,7 +81,7 @@ public class Events {
         BlockPos pos = event.getPos();
         Player player = event.getEntity();
         BlockState state = world.getBlockState(pos);
-        FluidState fluidstate = player.getLevel().getFluidState(pos);
+        FluidState fluidstate = player.level().getFluidState(pos);
 
         //test if adjustment tool is in hand and particle spawner is clicked
         if (stack.getItem() == ModItems.TOOL.get() && state.getBlock() == ModBlocks.PARTICLE.get()) {
@@ -141,14 +141,13 @@ public class Events {
     }
 
 
-
     /**
      * Distributes the supporter rewards on first join.
      */
     @SubscribeEvent
     public static void SupporterRewards(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getEntity();
-        Level world = player.getLevel();
+        Level level = player.level();
 
         if (Config.PATREON_REWARDS.get()) {
 
@@ -174,7 +173,7 @@ public class Events {
                             ownerNBT.putString("SkullOwner", player.getName().getString());
                             reward.setTag(ownerNBT);
 
-                            player.getLevel().playSound((Player) null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5F, world.random.nextFloat() * 0.15F + 0.8F);
+                            level.playSound((Player) null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5F, level.random.nextFloat() * 0.15F + 0.8F);
                             player.addItem(reward);
                             player.addItem(certificate);
                         }
@@ -198,6 +197,7 @@ public class Events {
             }
         }
     }
+
 
     /**
      * Tests if a player is a supporter

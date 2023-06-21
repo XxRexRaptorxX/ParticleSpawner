@@ -16,18 +16,15 @@ import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import xxrexraptorxx.particle_spawner.main.ModBlocks;
 import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
+import xxrexraptorxx.particle_spawner.registry.ModBlocks;
 import xxrexraptorxx.particle_spawner.utils.Config;
 import xxrexraptorxx.particle_spawner.utils.ParticleHelper;
 
@@ -49,11 +46,13 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 
 
 	public ParticleBlock() {
-		super(Properties.of(Material.METAL)
+		super(Properties.of()
 				.noCollission()
 				.noOcclusion()
 				.strength(-1.0F, 3600000.0F)
 				.sound(SoundType.STONE)
+				.mapColor(MapColor.METAL)
+				.instrument(NoteBlockInstrument.BASEDRUM)
 		);
 
 		this.registerDefaultState(this.defaultBlockState().setValue(POWERED, Boolean.valueOf(false)).setValue(PARTICLE_TYPE, 1).setValue(PARTICLE_STRENGTH, 1).setValue(PARTICLE_RANGE, 1).setValue(WATERLOGGED, Boolean.valueOf(false)));

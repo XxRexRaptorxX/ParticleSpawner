@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import xxrexraptorxx.particle_spawner.main.ModBlocks;
+import xxrexraptorxx.particle_spawner.registry.ModBlocks;
 import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
 
 import javax.annotation.Nullable;

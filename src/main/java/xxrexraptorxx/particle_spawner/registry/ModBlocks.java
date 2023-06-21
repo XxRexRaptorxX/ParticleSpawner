@@ -1,4 +1,4 @@
-package xxrexraptorxx.particle_spawner.main;
+package xxrexraptorxx.particle_spawner.registry;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -9,6 +9,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import xxrexraptorxx.particle_spawner.blocks.ParticleBlock;
+import xxrexraptorxx.particle_spawner.main.References;
 
 public class ModBlocks {
 
