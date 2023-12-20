@@ -1,17 +1,15 @@
 package xxrexraptorxx.particle_spawner.registry;
 
 
-import net.minecraft.world.item.Item;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import xxrexraptorxx.particle_spawner.items.AdjustmentTool;
 import xxrexraptorxx.particle_spawner.main.References;
 
 public class ModItems {
 
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, References.MODID);
+    private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(References.MODID);
 
 
     public static void init() {
@@ -19,6 +17,6 @@ public class ModItems {
     }
 
 
-    public static final RegistryObject<AdjustmentTool> TOOL = ITEMS.register("adjustment_tool", AdjustmentTool::new);
+    public static final DeferredItem<AdjustmentTool> TOOL = ITEMS.register("adjustment_tool", AdjustmentTool::new);
 
 }

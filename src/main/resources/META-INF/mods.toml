@@ -17,7 +17,7 @@ description='''This mod adds a spawner that is invisible itself and spawns diffe
 
 
 [[dependencies.${mod_id}]]
-modId="forge"
+modId="neoforge"
 mandatory=true
 versionRange="${forge_version_range}"
 ordering="NONE"

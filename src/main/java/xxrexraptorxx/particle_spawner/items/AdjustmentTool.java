@@ -45,7 +45,7 @@ public class AdjustmentTool extends Item {
         if (level.getBlockState(pos).getBlock() != ModBlocks.PARTICLE.get()) {
 
             //TOOL MODE SWITCH
-            level.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
+            level.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.BLOCKS, 1.0f, 1.0f);
 
             CompoundTag tag = new CompoundTag();
             ItemStack stack = event.getItemInHand();
