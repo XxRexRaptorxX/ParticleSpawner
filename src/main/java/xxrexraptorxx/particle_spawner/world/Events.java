@@ -1,9 +1,12 @@
 package xxrexraptorxx.particle_spawner.world;
 
+import com.mojang.authlib.GameProfile;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,7 +18,10 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ResolvableProfile;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -23,8 +29,8 @@ import net.minecraft.world.level.material.Fluids;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.VersionChecker;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import xxrexraptorxx.particle_spawner.blocks.ParticleBlock;
@@ -32,6 +38,7 @@ import xxrexraptorxx.particle_spawner.items.AdjustmentTool;
 import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
 import xxrexraptorxx.particle_spawner.main.References;
 import xxrexraptorxx.particle_spawner.registry.ModBlocks;
+import xxrexraptorxx.particle_spawner.registry.ModComponents;
 import xxrexraptorxx.particle_spawner.registry.ModItems;
 import xxrexraptorxx.particle_spawner.utils.Config;
 
@@ -40,16 +47,14 @@ import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
 
-@Mod.EventBusSubscriber(modid = References.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = References.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class Events {
-
-
 
     /** Update-Checker **/
     private static boolean hasShownUp = false;
 
     @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) {
+    public static void onClientTick(ClientTickEvent.Pre event) {
         if (Config.UPDATE_CHECKER.get()) {
             if (!hasShownUp && Minecraft.getInstance().screen == null) {
                 if (VersionChecker.getResult(ModList.get().getModContainerById(References.MODID).get().getModInfo()).status() == VersionChecker.Status.OUTDATED ||
@@ -67,74 +72,6 @@ public class Events {
                     ParticleSpawner.LOGGER.error(References.NAME + "'s version checker failed!");
                     hasShownUp = true;
 
-                }
-            }
-        }
-    }
-
-
-    /** Adjustment Tool **/
-    @SubscribeEvent
-    public static void onInteract(PlayerInteractEvent.RightClickBlock event) {
-        ItemStack stack = event.getItemStack();
-        Level world = event.getLevel();
-        BlockPos pos = event.getPos();
-        Player player = event.getEntity();
-        BlockState state = world.getBlockState(pos);
-        FluidState fluidstate = player.level().getFluidState(pos);
-
-        //test if adjustment tool is in hand and particle spawner is clicked
-        if (stack.getItem() == ModItems.TOOL.get() && state.getBlock() == ModBlocks.PARTICLE.get()) {
-
-            world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.BLOCKS, 1.0f, 1.0f);
-
-            //sets a mode if no tag is present
-            if (!stack.hasTag()) {
-                AdjustmentTool.cycleMode(stack);
-            }
-
-            //Power the block on first use
-            if (state.getValue(ParticleBlock.POWERED).booleanValue() == false) {
-                world.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true).setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH)).setValue(ParticleBlock.WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER)), 11);
-            }
-
-            //Modes
-            if (state.getValue(ParticleBlock.POWERED).booleanValue() == true) {
-
-                if (player.isShiftKeyDown()) {      //subtract mode
-                    if (stack.getTag().getString("mode").equals("type") || !stack.hasTag()) {
-                        ParticleBlock.refreshBlockStates(world, pos, state, -1, 0, 0);
-
-                    } else if (stack.getTag().getString("mode").equals("strength")) {
-                        ParticleBlock.refreshBlockStates(world, pos, state, 0, -1, 0);
-
-                    } else if (stack.getTag().getString("mode").equals("range")) {
-                        ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, -1);
-                    }
-
-                } else {    //add mode
-                    if (stack.getTag().getString("mode").equals("break")) {
-                        ItemEntity drop = new ItemEntity(world, (double) pos.getX() + 0.5D, (double) pos.getY() + 1.5D, (double) pos.getZ() + 0.5D, new ItemStack(ModBlocks.PARTICLE.get()));
-                        world.destroyBlock(pos, false);
-                        world.addFreshEntity(drop);
-
-                    } else if (stack.getTag().getString("mode").equals("type") || !stack.hasTag()) {
-                        ParticleBlock.refreshBlockStates(world, pos, state, +1, 0, 0);
-
-                    } else if (stack.getTag().getString("mode").equals("strength")) {
-                        ParticleBlock.refreshBlockStates(world, pos, state, 0, +1, 0);
-
-                    } else if (stack.getTag().getString("mode").equals("range")) {
-                        ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, +1);
-
-                    } else {
-                        ParticleSpawner.LOGGER.error("Unknown Tool Mode: " + stack.getTag().getString("mode"));
-                    }
-                }
-
-                if (world.isClientSide) {
-                    player.displayClientMessage(Component.literal(ChatFormatting.YELLOW + stack.getTag().getString("mode").substring(0, 1).toUpperCase() + stack.getTag().getString("mode").substring(1)
-                            + ": " + state.getValue(ParticleBlock.getStateByName(stack.getTag().getString("mode")))), true);
                 }
             }
         }
@@ -166,12 +103,12 @@ public class Events {
                         //test if player is supporter
                         if (SupporterCheck(SUPPORTER_URL, player)) {
 
-                            ItemStack certificate = new ItemStack(Items.PAPER).setHoverName((Component.literal("Thank you for supporting me in my work!").withStyle(ChatFormatting.GOLD).append(Component.literal(" - XxRexRaptorxX").withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GREEN))));
+                            ItemStack certificate = new ItemStack(Items.PAPER);
+                            certificate.set(DataComponents.CUSTOM_NAME, Component.literal("Thank you for supporting me in my work!").withStyle(ChatFormatting.GOLD).append(Component.literal(" - XxRexRaptorxX").withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GREEN)));
 
-                            CompoundTag ownerNBT = new CompoundTag();
                             ItemStack reward = new ItemStack(Items.PLAYER_HEAD);
-                            ownerNBT.putString("SkullOwner", player.getName().getString());
-                            reward.setTag(ownerNBT);
+                            var profile = new GameProfile(player.getUUID(), player.getName().getString());
+                            reward.set(DataComponents.PROFILE, new ResolvableProfile(profile));
 
                             level.playSound((Player) null, player.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.5F, level.random.nextFloat() * 0.15F + 0.8F);
                             player.addItem(reward);
@@ -180,15 +117,24 @@ public class Events {
 
                         //test if player is premium supporter
                         if (SupporterCheck(PREMIUM_SUPPORTER_URL, player)) {
-                            ItemStack reward = new ItemStack(Items.DIAMOND_SWORD, 1).setHoverName(Component.literal("Rex's Night Sword").withStyle(ChatFormatting.DARK_GRAY));
-                            reward.enchant(Enchantments.MENDING, 1);
-                            reward.enchant(Enchantments.SHARPNESS, 3);
+                            ItemStack reward = new ItemStack(Items.DIAMOND_SWORD, 1);
+                            Registry<Enchantment> enchantmentsRegistry = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
+
+                            reward.enchant(enchantmentsRegistry.getHolderOrThrow(Enchantments.MENDING), 1);
+                            reward.enchant(enchantmentsRegistry.getHolderOrThrow(Enchantments.SHARPNESS), 3);
+                            reward.set(DataComponents.ENCHANTMENTS, reward.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY));
+
+                            reward.set(DataComponents.CUSTOM_NAME, Component.literal("Rex's Night Sword").withStyle(ChatFormatting.DARK_GRAY));
+
                             player.addItem(reward);
                         }
 
                         //test if player is elite
                         if (SupporterCheck(ELITE_URL, player)) {
-                            player.addItem(new ItemStack(Items.NETHER_STAR).setHoverName(Component.literal("Elite Star")));
+                            ItemStack star = new ItemStack(Items.NETHER_STAR);
+                            star.set(DataComponents.CUSTOM_NAME, Component.literal("Elite Star"));
+
+                            player.addItem(star);
                         }
                     }
                 }
@@ -228,6 +174,80 @@ public class Events {
         }
 
         return false;
+    }
+
+
+    /** Adjustment Tool **/
+    @SubscribeEvent
+    public static void onInteract(PlayerInteractEvent.RightClickBlock event) {
+        ItemStack stack = event.getItemStack();
+        Level world = event.getLevel();
+        BlockPos pos = event.getPos();
+        Player player = event.getEntity();
+        BlockState state = world.getBlockState(pos);
+        FluidState fluidstate = player.level().getFluidState(pos);
+
+        // Test if adjustment tool is in hand and particle spawner is clicked
+        if (stack.getItem() == ModItems.TOOL.get() && state.getBlock() == ModBlocks.PARTICLE.get()) {
+
+            world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.BLOCKS, 1.0f, 1.0f);
+
+            // Sets a mode if no tag is present
+            if (!stack.has(ModComponents.MODE)) {
+                AdjustmentTool.cycleMode(stack);
+            }
+
+            // Power the block on first use
+            if (!state.getValue(ParticleBlock.POWERED)) {
+                world.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState()
+                        .setValue(ParticleBlock.POWERED, true)
+                        .setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH))
+                        .setValue(ParticleBlock.WATERLOGGED, fluidstate.getType() == Fluids.WATER), 11);
+            }
+
+            // Modes
+            if (state.getValue(ParticleBlock.POWERED)) {
+                String mode = stack.get(ModComponents.MODE);
+
+                if (player.isShiftKeyDown()) {  // subtract mode
+                    switch (mode) {
+                        case "type":
+                            ParticleBlock.refreshBlockStates(world, pos, state, -1, 0, 0);
+                            break;
+                        case "strength":
+                            ParticleBlock.refreshBlockStates(world, pos, state, 0, -1, 0);
+                            break;
+                        case "range":
+                            ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, -1);
+                            break;
+                    }
+                } else {  // add mode
+                    switch (mode) {
+                        case "break":
+                            ItemEntity drop = new ItemEntity(world, pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, new ItemStack(ModBlocks.PARTICLE.get()));
+                            world.destroyBlock(pos, false);
+                            world.addFreshEntity(drop);
+                            break;
+                        case "type":
+                            ParticleBlock.refreshBlockStates(world, pos, state, +1, 0, 0);
+                            break;
+                        case "strength":
+                            ParticleBlock.refreshBlockStates(world, pos, state, 0, +1, 0);
+                            break;
+                        case "range":
+                            ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, +1);
+                            break;
+                        default:
+                            ParticleSpawner.LOGGER.error("Unknown Tool Mode: " + mode);
+                    }
+                }
+
+                if (world.isClientSide) {
+                    player.displayClientMessage(Component.literal(ChatFormatting.YELLOW + mode.substring(0, 1).toUpperCase() + mode.substring(1)
+                            + ": " + state.getValue(ParticleBlock.getStateByName(mode))), true);
+                }
+            }
+        }
     }
 
 

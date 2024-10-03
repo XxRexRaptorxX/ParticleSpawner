@@ -22,7 +22,7 @@ public class ParticleHelper {
                 return ParticleTypes.FLAME;
 
             case 2:
-                return ParticleTypes.AMBIENT_ENTITY_EFFECT;
+                return ParticleTypes.TRIAL_SPAWNER_DETECTED_PLAYER_OMINOUS;
 
             case 3:
                 return ParticleTypes.ANGRY_VILLAGER;

@@ -3,7 +3,6 @@ package xxrexraptorxx.particle_spawner.registry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -16,8 +15,7 @@ public class ModBlocks {
     private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(References.MODID);
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(References.MODID);
 
-    public static void init() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    public static void init(IEventBus bus) {
         BLOCKS.register(bus);
         ITEMS.register(bus);
     }
