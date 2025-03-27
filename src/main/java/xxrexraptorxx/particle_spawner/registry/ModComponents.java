@@ -11,7 +11,7 @@ import java.util.function.UnaryOperator;
 
 public class ModComponents {
 
-    private static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(References.MODID);
+    private static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(DeferredRegister.DataComponents, References.MODID);
 
     public static void init(IEventBus bus) {
         DATA_COMPONENT_TYPES.register(bus);
