@@ -1,17 +1,13 @@
 package xxrexraptorxx.particle_spawner.blocks;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -30,7 +26,6 @@ import xxrexraptorxx.particle_spawner.utils.Config;
 import xxrexraptorxx.particle_spawner.utils.ParticleHelper;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Random;
 
 
@@ -94,15 +89,9 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 
 		if(state.getValue(POWERED)) {
 			for (int i = 0; i < state.getValue(PARTICLE_STRENGTH); i++) {
-				level.addParticle(ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), Config.ALWAYS_RENDER_PARTICLES.get(), (double) pos.getX() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE).doubleValue()), (double) pos.getY() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE)), (double) pos.getZ() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE)), 0.0D, 0.0D, 0.00);
+				level.addParticle(ParticleHelper.getParticleById(state.getValue(PARTICLE_TYPE)), false, Config.ALWAYS_RENDER_PARTICLES.get(), (double) pos.getX() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE).doubleValue()), (double) pos.getY() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE)), (double) pos.getZ() - (state.getValue(PARTICLE_RANGE) / 2) + random.nextDouble(state.getValue(PARTICLE_RANGE)), 0.0D, 0.0D, 0.00);
 			}
 		}
-	}
-
-
-	@Override
-	public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
-		list.add(Component.translatable("message.particle_spawner.spawner.desc").withStyle(ChatFormatting.GRAY));
 	}
 
 
@@ -169,12 +158,12 @@ public class ParticleBlock extends Block implements SimpleWaterloggedBlock {
 	// Waterlogging
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-		if (state.getValue(WATERLOGGED)) {
-			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+	if (state.getValue(WATERLOGGED)) {
+			scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 
-		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+		return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
 	}
 
 

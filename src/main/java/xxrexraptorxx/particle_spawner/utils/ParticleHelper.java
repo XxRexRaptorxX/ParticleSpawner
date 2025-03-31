@@ -1,12 +1,12 @@
 package xxrexraptorxx.particle_spawner.utils;
 
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
 
 public class ParticleHelper {
 
-    public static SimpleParticleType getParticleById(Integer id) {
+    public static ParticleOptions getParticleById(Integer id) {
    /**      TODO
     ArrayList<SimpleParticleType> list = new ArrayList<>();
 

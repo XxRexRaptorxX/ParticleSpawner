@@ -10,13 +10,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
 import xxrexraptorxx.particle_spawner.registry.ModBlocks;
 import xxrexraptorxx.particle_spawner.registry.ModComponents;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 public class AdjustmentTool extends Item {
 
@@ -28,10 +29,10 @@ public class AdjustmentTool extends Item {
 
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> list, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> list, TooltipFlag flag) {
         if (stack.has(ModComponents.MODE))
-            list.add(Component.literal("Mode: " + stack.get(ModComponents.MODE).substring(0, 1).toUpperCase() + stack.get(ModComponents.MODE).substring(1)).withStyle(ChatFormatting.YELLOW));
-        list.add(Component.translatable("message.particle_spawner.tool.desc").withStyle(ChatFormatting.GRAY));
+            list.accept(Component.literal("Mode: " + stack.get(ModComponents.MODE).substring(0, 1).toUpperCase() + stack.get(ModComponents.MODE).substring(1)).withStyle(ChatFormatting.YELLOW));
+        list.accept(Component.translatable("message.particle_spawner.tool.desc").withStyle(ChatFormatting.GRAY));
     }
 
 

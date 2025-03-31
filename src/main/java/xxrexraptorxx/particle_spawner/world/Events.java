@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
@@ -16,6 +17,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ResolvableProfile;
@@ -31,6 +33,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.VersionChecker;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import xxrexraptorxx.particle_spawner.blocks.ParticleBlock;
@@ -248,6 +251,18 @@ public class Events {
                             + ": " + state.getValue(ParticleBlock.getStateByName(mode))), true);
                 }
             }
+        }
+    }
+
+
+    @SubscribeEvent
+    public static void addingToolTips(ItemTooltipEvent event) {
+        ItemStack stack = event.getItemStack();
+        Item item = stack.getItem();
+        List<Component> list = event.getToolTip();
+
+        if (BuiltInRegistries.BLOCK.getKey(ModBlocks.PARTICLE.get()).getPath().equals(BuiltInRegistries.ITEM.getKey(item).getPath())) {
+            list.add(Component.translatable("message." + References.MODID + ".spawner.desc").withStyle(ChatFormatting.GRAY));
         }
     }
 
