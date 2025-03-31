@@ -14,8 +14,10 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
+import xxrexraptorxx.particle_spawner.main.References;
 import xxrexraptorxx.particle_spawner.registry.ModBlocks;
 import xxrexraptorxx.particle_spawner.registry.ModComponents;
+import xxrexraptorxx.particle_spawner.registry.ModItems;
 
 import java.util.function.Consumer;
 
@@ -24,6 +26,7 @@ public class AdjustmentTool extends Item {
     public AdjustmentTool() {
         super(new Properties()
                 .stacksTo(1)
+                .setId(ModItems.itemId("adjustment_tool"))
         );
     }
 
@@ -32,7 +35,7 @@ public class AdjustmentTool extends Item {
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> list, TooltipFlag flag) {
         if (stack.has(ModComponents.MODE))
             list.accept(Component.literal("Mode: " + stack.get(ModComponents.MODE).substring(0, 1).toUpperCase() + stack.get(ModComponents.MODE).substring(1)).withStyle(ChatFormatting.YELLOW));
-        list.accept(Component.translatable("message.particle_spawner.tool.desc").withStyle(ChatFormatting.GRAY));
+        list.accept(Component.translatable("message." + References.MODID + ".tool.desc").withStyle(ChatFormatting.GRAY));
     }
 
 

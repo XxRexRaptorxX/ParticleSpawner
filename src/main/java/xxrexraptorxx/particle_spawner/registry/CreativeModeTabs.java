@@ -17,7 +17,7 @@ public class CreativeModeTabs {
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB = CREATIVE_MODE_TABS.register(References.MODID, () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + References.MODID + "_tab"))
-            .icon(() -> ModBlocks.PARTICLE_BLOCKITEM.get().getDefaultInstance())
+            .icon(ModBlocks.PARTICLE::toStack)
             .displayItems((params, output) -> {
                 output.accept(ModBlocks.PARTICLE.get());
                 output.accept(ModItems.TOOL.get());
