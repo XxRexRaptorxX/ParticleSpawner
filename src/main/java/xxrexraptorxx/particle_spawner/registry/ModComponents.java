@@ -2,6 +2,7 @@ package xxrexraptorxx.particle_spawner.registry;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.Registries;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -11,7 +12,7 @@ import java.util.function.UnaryOperator;
 
 public class ModComponents {
 
-    private static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(DeferredRegister.DataComponents, References.MODID);
+    public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, References.MODID);
 
     public static void init(IEventBus bus) {
         DATA_COMPONENT_TYPES.register(bus);
