@@ -13,6 +13,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import xxrexraptorxx.magmacore.utils.FormattingHelper;
 import xxrexraptorxx.particle_spawner.main.ParticleSpawner;
 import xxrexraptorxx.particle_spawner.main.References;
 import xxrexraptorxx.particle_spawner.registry.ModBlocks;
@@ -33,7 +34,7 @@ public class AdjustmentTool extends Item {
         if (stack.has(ModComponents.MODE))
             list.accept(Component.literal("Mode: " + stack.get(ModComponents.MODE).substring(0, 1).toUpperCase() + stack.get(ModComponents.MODE).substring(1))
                     .withStyle(ChatFormatting.YELLOW));
-        list.accept(Component.translatable("message." + References.MODID + ".tool.desc").withStyle(ChatFormatting.GRAY));
+        list.accept(FormattingHelper.setMessageComponent(References.MODID, "tool.desc", ChatFormatting.GRAY));
     }
 
 
@@ -51,9 +52,12 @@ public class AdjustmentTool extends Item {
             ItemStack stack = event.getItemInHand();
             stack.set(ModComponents.MODE, cycleMode(stack));
 
-            if (level.isClientSide())
+            if (level.isClientSide()) {
+                assert player != null;
+
                 player.displayClientMessage(Component.literal(
                         ChatFormatting.YELLOW + "Mode: " + stack.get(ModComponents.MODE).substring(0, 1).toUpperCase() + stack.get(ModComponents.MODE).substring(1)), true);
+            }
         }
         return super.useOn(event);
     }

@@ -5,6 +5,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import xxrexraptorxx.magmacore.main.ModRegistry;
 import xxrexraptorxx.particle_spawner.registry.CreativeModeTabs;
 import xxrexraptorxx.particle_spawner.registry.ModBlocks;
 import xxrexraptorxx.particle_spawner.registry.ModComponents;
@@ -28,6 +29,7 @@ public class ParticleSpawner {
         CreativeModeTabs.init(bus);
 
         Config.init(container);
+        ModRegistry.register(References.MODID, References.NAME, References.URL);
     }
 
 }
