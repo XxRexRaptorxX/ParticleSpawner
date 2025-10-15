@@ -36,7 +36,7 @@ Useful for more decoration possibilities of your buildings.
 ## 🗃️ Dependencies
 
 ### Required:
-- **Magma Core** (soon!)
+- **Magma Core**
     - Provides basic code and features such as update-checker
     - [CurseForge][cf_magmacore] | [Modrinth][mr_magmacore]
 
