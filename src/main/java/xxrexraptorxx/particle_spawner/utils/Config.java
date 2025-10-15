@@ -16,11 +16,9 @@ public class Config {
     public static ModConfigSpec.BooleanValue PATREON_REWARDS;
 
     public static ModConfigSpec.BooleanValue ALWAYS_RENDER_PARTICLES;
-    public static Integer PARTICLE_SPAWNER_STRENGTH_MAX_VALUE = 10;         //TODO wip
-    public static Integer PARTICLE_SPAWNER_RANGE_MAX_VALUE = 10;            //TODO wip
-    public static Integer PARTICLE_SPAWNER_TYPE_MAX_VALUE = 58;         //TODO wip
-
-
+    public static Integer PARTICLE_SPAWNER_STRENGTH_MAX_VALUE = 10; // TODO wip
+    public static Integer PARTICLE_SPAWNER_RANGE_MAX_VALUE = 10; // TODO wip
+    public static Integer PARTICLE_SPAWNER_TYPE_MAX_VALUE = 58; // TODO wip
 
 
     public static void init(ModContainer container) {
@@ -52,9 +50,12 @@ public class Config {
 
         builder.comment("Blocks").push(CATEGORY_BLOCKS);
         ALWAYS_RENDER_PARTICLES = builder.comment("true = ignores the graphic settings and spawn always all particles").define("always_render_particles", true);
-        //PARTICLE_SPAWNER_RANGE_MAX_VALUE = builder.comment("The max value of particle range from the Particle Spawner").defineInRange("particle_spawner_range_max_value", 10, 1, 100); TODO -> broken
-        //PARTICLE_SPAWNER_STRENGTH_MAX_VALUE = builder.comment("The max value of particle strength from the Particle Spawner").defineInRange("particle_spawner_strength_max_value", 10, 1, 100);
-        //PARTICLE_SPAWNER_TYPE_MAX_VALUE = builder.comment("The The max value of particle type from the Particle Spawner [Don't change this value unless you have added new particles!]").defineInRange("particle_spawner_type_max_value", 58, 1, 100);
+        // PARTICLE_SPAWNER_RANGE_MAX_VALUE = builder.comment("The max value of particle range from the Particle Spawner").defineInRange("particle_spawner_range_max_value", 10, 1,
+        // 100); TODO -> broken
+        // PARTICLE_SPAWNER_STRENGTH_MAX_VALUE = builder.comment("The max value of particle strength from the Particle
+        // Spawner").defineInRange("particle_spawner_strength_max_value", 10, 1, 100);
+        // PARTICLE_SPAWNER_TYPE_MAX_VALUE = builder.comment("The The max value of particle type from the Particle Spawner [Don't change this value unless you have added new
+        // particles!]").defineInRange("particle_spawner_type_max_value", 58, 1, 100);
         builder.pop();
 
         COMMON_CONFIG = builder.build();

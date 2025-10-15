@@ -22,7 +22,7 @@ public class ModComponents {
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> MODE = register("mode", builder -> builder.persistent(Codec.STRING));
 
 
-    public  static <T>DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {
+    public static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {
         return DATA_COMPONENT_TYPES.register(name, () -> builderOperator.apply(DataComponentType.builder()).build());
     }
 

@@ -24,17 +24,15 @@ import java.util.function.Consumer;
 public class AdjustmentTool extends Item {
 
     public AdjustmentTool() {
-        super(new Properties()
-                .stacksTo(1)
-                .setId(ModItems.itemId("adjustment_tool"))
-        );
+        super(new Properties().stacksTo(1).setId(ModItems.itemId("adjustment_tool")));
     }
 
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> list, TooltipFlag flag) {
         if (stack.has(ModComponents.MODE))
-            list.accept(Component.literal("Mode: " + stack.get(ModComponents.MODE).substring(0, 1).toUpperCase() + stack.get(ModComponents.MODE).substring(1)).withStyle(ChatFormatting.YELLOW));
+            list.accept(Component.literal("Mode: " + stack.get(ModComponents.MODE).substring(0, 1).toUpperCase() + stack.get(ModComponents.MODE).substring(1))
+                    .withStyle(ChatFormatting.YELLOW));
         list.accept(Component.translatable("message." + References.MODID + ".tool.desc").withStyle(ChatFormatting.GRAY));
     }
 
@@ -47,18 +45,18 @@ public class AdjustmentTool extends Item {
 
         if (level.getBlockState(pos).getBlock() != ModBlocks.PARTICLE.get()) {
 
-            //TOOL MODE SWITCH
+            // TOOL MODE SWITCH
             level.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK.value(), SoundSource.BLOCKS, 1.0f, 1.0f);
 
             ItemStack stack = event.getItemInHand();
             stack.set(ModComponents.MODE, cycleMode(stack));
 
             if (level.isClientSide)
-                player.displayClientMessage(Component.literal(ChatFormatting.YELLOW + "Mode: " + stack.get(ModComponents.MODE).substring(0, 1).toUpperCase() + stack.get(ModComponents.MODE).substring(1)), true);
+                player.displayClientMessage(Component.literal(
+                        ChatFormatting.YELLOW + "Mode: " + stack.get(ModComponents.MODE).substring(0, 1).toUpperCase() + stack.get(ModComponents.MODE).substring(1)), true);
         }
-            return super.useOn(event);
+        return super.useOn(event);
     }
-
 
 
     public static String cycleMode(ItemStack stack) {
@@ -66,11 +64,15 @@ public class AdjustmentTool extends Item {
             String mode = stack.get(ModComponents.MODE);
 
             switch (mode) {
-                case "type": return "strength";
-                case "strength": return "range";
-                case "range": return "break";
-                case "break": return "type";
-                default:
+                case "type" :
+                    return "strength";
+                case "strength" :
+                    return "range";
+                case "range" :
+                    return "break";
+                case "break" :
+                    return "type";
+                default :
                     ParticleSpawner.LOGGER.error("Unknown mode (" + mode + ") on cycle switch.");
                     return "break";
             }

@@ -75,7 +75,9 @@ public class Events {
                         MutableComponent url = Component.literal(ChatFormatting.GREEN + "Click here to update!")
                                 .withStyle(style -> style.withClickEvent(new ClickEvent.OpenUrl(URI.create(References.URL))));
 
-                        player.displayClientMessage(Component.literal(ChatFormatting.BLUE + "A newer version of " + ChatFormatting.YELLOW + References.NAME + ChatFormatting.BLUE + " is available!"), false);
+                        player.displayClientMessage(
+                                Component.literal(ChatFormatting.BLUE + "A newer version of " + ChatFormatting.YELLOW + References.NAME + ChatFormatting.BLUE + " is available!"),
+                                false);
                         player.displayClientMessage(url, false);
 
                         hasShownUp = true;
@@ -163,6 +165,7 @@ public class Events {
         player.getInventory().add(certificate);
     }
 
+
     private static void givePremiumSupporterReward(Player player, Level level) {
         ItemStack reward = new ItemStack(Items.DIAMOND_SWORD, 1);
         Registry<Enchantment> enchantmentsRegistry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
@@ -172,6 +175,7 @@ public class Events {
         reward.set(DataComponents.ENCHANTMENTS, reward.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY));
         player.getInventory().add(reward);
     }
+
 
     private static void giveEliteReward(Player player) {
         ItemStack star = new ItemStack(Items.NETHER_STAR);
@@ -203,52 +207,55 @@ public class Events {
 
             // Power the block on first use
             if (!state.getValue(ParticleBlock.POWERED)) {
-                world.setBlock(pos, ModBlocks.PARTICLE.get().defaultBlockState()
-                        .setValue(ParticleBlock.POWERED, true)
-                        .setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH))
-                        .setValue(ParticleBlock.WATERLOGGED, fluidstate.getType() == Fluids.WATER), 11);
+                world.setBlock(pos,
+                        ModBlocks.PARTICLE.get().defaultBlockState().setValue(ParticleBlock.POWERED, true)
+                                .setValue(ParticleBlock.PARTICLE_STRENGTH, state.getValue(ParticleBlock.PARTICLE_STRENGTH))
+                                .setValue(ParticleBlock.WATERLOGGED, fluidstate.getType() == Fluids.WATER),
+                        11);
             }
 
             // Modes
             if (state.getValue(ParticleBlock.POWERED)) {
                 String mode = stack.get(ModComponents.MODE);
 
-                if (player.isShiftKeyDown()) {  // subtract mode
+                if (player.isShiftKeyDown()) { // subtract mode
                     switch (mode) {
-                        case "type":
+                        case "type" :
                             ParticleBlock.refreshBlockStates(world, pos, state, -1, 0, 0);
                             break;
-                        case "strength":
+                        case "strength" :
                             ParticleBlock.refreshBlockStates(world, pos, state, 0, -1, 0);
                             break;
-                        case "range":
+                        case "range" :
                             ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, -1);
                             break;
                     }
-                } else {  // add mode
+                } else { // add mode
                     switch (mode) {
-                        case "break":
+                        case "break" :
                             ItemEntity drop = new ItemEntity(world, pos.getX() + 0.5D, pos.getY() + 1.5D, pos.getZ() + 0.5D, new ItemStack(ModBlocks.PARTICLE.get()));
                             world.destroyBlock(pos, false);
                             world.addFreshEntity(drop);
                             break;
-                        case "type":
+                        case "type" :
                             ParticleBlock.refreshBlockStates(world, pos, state, +1, 0, 0);
                             break;
-                        case "strength":
+                        case "strength" :
                             ParticleBlock.refreshBlockStates(world, pos, state, 0, +1, 0);
                             break;
-                        case "range":
+                        case "range" :
                             ParticleBlock.refreshBlockStates(world, pos, state, 0, 0, +1);
                             break;
-                        default:
+                        default :
                             ParticleSpawner.LOGGER.error("Unknown Tool Mode: " + mode);
                     }
                 }
 
                 if (world.isClientSide) {
-                    player.displayClientMessage(Component.literal(ChatFormatting.YELLOW + mode.substring(0, 1).toUpperCase() + mode.substring(1)
-                            + ": " + state.getValue(ParticleBlock.getStateByName(mode))), true);
+                    player.displayClientMessage(
+                            Component.literal(
+                                    ChatFormatting.YELLOW + mode.substring(0, 1).toUpperCase() + mode.substring(1) + ": " + state.getValue(ParticleBlock.getStateByName(mode))),
+                            true);
                 }
             }
         }

@@ -1,6 +1,10 @@
 {
   "variants": {
-    "powered=false": { "model": "particle_spawner:block/particle_spawner_off" },
-    "powered=true": { "model": "particle_spawner:block/particle_spawner_on" }
+    "powered=false": {
+      "model": "particle_spawner:block/particle_spawner_off"
+    },
+    "powered=true": {
+      "model": "particle_spawner:block/particle_spawner_on"
+    }
   }
 }

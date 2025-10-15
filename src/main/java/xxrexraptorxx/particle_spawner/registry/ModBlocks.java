@@ -28,14 +28,8 @@ public class ModBlocks {
     }
 
 
-    public static final DeferredBlock<ParticleBlock> PARTICLE = registerBlock("particle_spawner", properties -> new ParticleBlock(properties
-            .noCollission()
-            .noOcclusion()
-            .strength(-1.0F, 3600000.0F)
-            .sound(SoundType.STONE)
-            .mapColor(MapColor.METAL)
-            .instrument(NoteBlockInstrument.BASEDRUM)
-    ));
+    public static final DeferredBlock<ParticleBlock> PARTICLE = registerBlock("particle_spawner", properties -> new ParticleBlock(
+            properties.noCollission().noOcclusion().strength(-1.0F, 3600000.0F).sound(SoundType.STONE).mapColor(MapColor.METAL).instrument(NoteBlockInstrument.BASEDRUM)));
 
 
     public static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> blockCreator) {
@@ -44,9 +38,11 @@ public class ModBlocks {
         return toReturn;
     }
 
+
     public static <T extends Block> void registerBlockItems(String name, DeferredBlock<T> block) {
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().setId(ModItems.itemId(name)).useBlockDescriptionPrefix()));
     }
+
 
     public static ResourceKey<Block> blockId(String name) {
         return ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(References.MODID, name));

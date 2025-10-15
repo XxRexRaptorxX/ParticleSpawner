@@ -2,12 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "pattern": [
-  
     "XOX",
     "O#O",
     "XOX"
   ],
-    
   "key": {
     "#": {
       "item": "minecraft:amethyst_cluster"
@@ -19,7 +17,6 @@
       "item": "minecraft:quartz"
     }
   },
-  
   "result": {
     "item": "particle_spawner:particle_spawner"
   }

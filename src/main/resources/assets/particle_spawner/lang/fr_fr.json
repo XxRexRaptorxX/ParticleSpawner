@@ -1,11 +1,8 @@
-{	
+{
   "_comment": "translated by PasteKBrain",
-
   "itemGroup.particle_spawner_tab": "Particle Spawner",
-
   "message.particle_spawner.tool.desc": "Clic-droit pour changer le mode",
   "message.particle_spawner.spawner.desc": "Utiliser l'Outil du Générateur à Particules pour l'activer",
-
   "block.particle_spawner.particle_spawner": "Générateur à Particules",
   "item.particle_spawner.adjustment_tool": "Outil du Générateur à Particules"
 }

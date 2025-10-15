@@ -1,9 +1,7 @@
 {
   "itemGroup.particle_spawner_tab": "Particle Spawner",
-
   "message.particle_spawner.tool.desc": "Rechtsklick um den Modus zu ändern",
   "message.particle_spawner.spawner.desc": "Benutze das Justierungs Werkzeug zum aktivieren",
-
   "block.particle_spawner.particle_spawner": "Partikel Spawner",
   "item.particle_spawner.adjustment_tool": "Justierungs Werkzeug"
 }

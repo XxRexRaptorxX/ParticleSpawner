@@ -2,11 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "pattern": [
-
     " #",
     "X "
   ],
-    
   "key": {
     "#": {
       "item": "minecraft:iron_ingot"
@@ -15,7 +13,6 @@
       "item": "minecraft:stick"
     }
   },
-  
   "result": {
     "item": "particle_spawner:adjustment_tool"
   }
