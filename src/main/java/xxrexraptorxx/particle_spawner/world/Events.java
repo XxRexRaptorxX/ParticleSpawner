@@ -52,7 +52,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = References.MODID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = References.MODID)
 public class Events {
 
     /** Update-Checker **/
@@ -251,7 +251,7 @@ public class Events {
                     }
                 }
 
-                if (world.isClientSide) {
+                if (world.isClientSide()) {
                     player.displayClientMessage(
                             Component.literal(
                                     ChatFormatting.YELLOW + mode.substring(0, 1).toUpperCase() + mode.substring(1) + ": " + state.getValue(ParticleBlock.getStateByName(mode))),

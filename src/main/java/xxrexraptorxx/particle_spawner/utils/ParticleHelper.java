@@ -65,10 +65,10 @@ public class ParticleHelper {
                 return ParticleTypes.DOLPHIN;
 
             case 17 :
-                return ParticleTypes.DRAGON_BREATH;
+                return ParticleTypes.FIREFLY;
 
             case 18 :
-                return ParticleTypes.EFFECT;
+                return ParticleTypes.FISHING;
 
             case 19 :
                 return ParticleTypes.SQUID_INK;
@@ -110,7 +110,7 @@ public class ParticleHelper {
                 return ParticleTypes.FIREWORK;
 
             case 32 :
-                return ParticleTypes.FLASH;
+                return ParticleTypes.PALE_OAK_LEAVES;
 
             case 33 :
                 return ParticleTypes.GLOW;
@@ -128,7 +128,7 @@ public class ParticleHelper {
                 return ParticleTypes.NOTE;
 
             case 38 :
-                return ParticleTypes.INSTANT_EFFECT;
+                return ParticleTypes.CHERRY_LEAVES;
 
             case 39 :
                 return ParticleTypes.LAVA;

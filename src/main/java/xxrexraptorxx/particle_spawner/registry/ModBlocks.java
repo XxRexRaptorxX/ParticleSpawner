@@ -29,7 +29,7 @@ public class ModBlocks {
 
 
     public static final DeferredBlock<ParticleBlock> PARTICLE = registerBlock("particle_spawner", properties -> new ParticleBlock(
-            properties.noCollission().noOcclusion().strength(-1.0F, 3600000.0F).sound(SoundType.STONE).mapColor(MapColor.METAL).instrument(NoteBlockInstrument.BASEDRUM)));
+            properties.noCollision().noOcclusion().strength(-1.0F, 3600000.0F).sound(SoundType.STONE).mapColor(MapColor.METAL).instrument(NoteBlockInstrument.BASEDRUM)));
 
 
     public static <T extends Block> DeferredBlock<T> registerBlock(String name, Function<BlockBehaviour.Properties, T> blockCreator) {

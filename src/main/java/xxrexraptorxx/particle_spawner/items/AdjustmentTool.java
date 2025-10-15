@@ -51,7 +51,7 @@ public class AdjustmentTool extends Item {
             ItemStack stack = event.getItemInHand();
             stack.set(ModComponents.MODE, cycleMode(stack));
 
-            if (level.isClientSide)
+            if (level.isClientSide())
                 player.displayClientMessage(Component.literal(
                         ChatFormatting.YELLOW + "Mode: " + stack.get(ModComponents.MODE).substring(0, 1).toUpperCase() + stack.get(ModComponents.MODE).substring(1)), true);
         }
