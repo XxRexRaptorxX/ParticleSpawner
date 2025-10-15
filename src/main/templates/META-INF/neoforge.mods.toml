@@ -8,13 +8,15 @@ modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
 itemIcon="particle_spawner:particle_spawner"
-updateJSONURL="https://raw.githubusercontent.com/XxRexRaptorxX/Update-Checker/main/ParticleSpawner_NEO.json"
+updateJSONURL="https://raw.githubusercontent.com/XxRexRaptorxX/ParticleSpawner/refs/heads/main/versions.json"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/particle-spawner"
 logoFile="logo.png"
 #credits=""
 authors="${mod_authors}"
 description='''This mod adds a spawner that is invisible itself and spawns different particles with adjustable strength and range!'''
 
+[modproperties.${mod_id}]
+configuredBackground="minecraft:textures/block/spawner.png"
 
 [[dependencies.${mod_id}]]
 modId="neoforge"
